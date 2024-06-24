@@ -1,9 +1,10 @@
 import { Box, Typography } from "@mui/material";
+import Hero from "../components/Hero";
 
 export default function Homepage() {
   return (
-    <Box sx={{ backgroundColor: "red", minHeight: '100vh' }}>
-      <Typography>This is the homepage</Typography>
+    <Box>
+      <Hero />
     </Box>
   );
 }

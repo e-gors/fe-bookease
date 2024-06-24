@@ -12,23 +12,20 @@ import {
   ListItem,
   ListItemButton,
   ListItemText,
+  Stack,
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import AdbIcon from "@mui/icons-material/Adb";
-import { styled } from "@mui/material/styles";
-
-const ColorButton = styled(Button)(({ theme }) => ({
-  borderColor: "#FE9D8C",
-  "&:hover": {
-    backgroundColor: "#FE9D8C",
-  },
-}));
+import { TextButton, OutlinedButton } from "../components/CustomButtons";
+import { useHistory } from "react-router-dom";
 
 const pages = ["Home", "About", "Services", "Contact", "Blog"];
 
 function PublicAppBar() {
   const [drawerOpen, setDrawerOpen] = React.useState(false);
   const [selectedPage, setSelectedPage] = React.useState("");
+
+  const history = useHistory();
 
   const handleOpenNavMenu = () => {
     setDrawerOpen(true);
@@ -43,6 +40,10 @@ function PublicAppBar() {
     setDrawerOpen(false);
   };
 
+  const handleNavigate = (link) => {
+    history.push(link);
+  };
+
   return (
     <AppBar
       enableColorOnDark
@@ -55,12 +56,7 @@ function PublicAppBar() {
         height: 60,
       }}
     >
-      <Container
-        maxWidth="xl"
-        sx={{
-          mx: 2,
-        }}
-      >
+      <Container maxWidth="xl">
         <Toolbar
           sx={{
             minHeight: 60,
@@ -163,9 +159,12 @@ function PublicAppBar() {
             ))}
           </Box>
 
-          <ColorButton color="inherit" variant="outlined">
-            Contact Us
-          </ColorButton>
+          <Stack direction="row" spacing={1}>
+            <TextButton variant="text" onClick={() => handleNavigate("/login")}>
+              Login
+            </TextButton>
+            <OutlinedButton variant="outlined">Sign Up Now</OutlinedButton>
+          </Stack>
         </Toolbar>
       </Container>
     </AppBar>
