@@ -23,7 +23,7 @@ const pages = ["Home", "About", "Services", "Contact", "Blog"];
 
 function PublicAppBar() {
   const [drawerOpen, setDrawerOpen] = React.useState(false);
-  const [selectedPage, setSelectedPage] = React.useState("");
+  const [selectedPage, setSelectedPage] = React.useState("Home");
 
   const history = useHistory();
 

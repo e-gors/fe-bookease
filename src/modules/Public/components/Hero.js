@@ -1,29 +1,42 @@
+import React from "react";
 import { Box, Stack, Typography } from "@mui/material";
 import {
   ContainedButton,
   OutlinedButton,
 } from "../../../components/CustomButtons";
+import ManWithCalendar from "../../../assets/man-with-calendar.jpg";
 
 export default function Hero() {
   return (
     <Box
       sx={{
-        minHeight: "calc(80vh - 60px)",
-        display: "flex",
+        height: "auto",
+        minHeight: "calc(90vh - 60px)",
+        display: "grid",
+        gridTemplateColumns: { xs: "1fr", md: "1fr 1fr" },
+        width: "90%",
         justifyContent: "center",
         alignItems: "center",
         alignContent: "center",
+        gap: 5, // Add gap between grid items
+        margin: "auto",
       }}
     >
-      <Box sx={{ width: "45%" }}>
+      <Box>
         <Typography
           variant="h3"
-          gutterButtom
-          sx={{ fontWeight: "bold", letterSpacing: 2 }}
+          gutterBottom
+          sx={{
+            fontWeight: "bold",
+            letterSpacing: 2,
+            fontSize: { xs: 24, sm: 36, md: 50 },
+            mt: 2,
+            mb: 2
+          }}
         >
           Find and Book the Best Services Near You
         </Typography>
-        <Typography variant="subtitle1" gutterButtom sx={{ letterSpacing: 1 }}>
+        <Typography variant="subtitle1" gutterBottom sx={{ letterSpacing: 1 }}>
           From medical appointments to pet services, we've got you covered. Our
           offerings include hair and beauty services, spa treatments, restaurant
           reservations, hotel accommodations, tutoring, event venues, travel
@@ -35,8 +48,14 @@ export default function Hero() {
           <OutlinedButton variant="outlined">Sign Up Now</OutlinedButton>
         </Stack>
       </Box>
-      <Box sx={{ width: "45%" }}>
-        <Typography>This is the picture in Hero Section</Typography>
+      <Box>
+        <img
+          src={ManWithCalendar}
+          alt="Man with a calendar"
+          style={{
+            width: "95%",
+          }}
+        />
       </Box>
     </Box>
   );
