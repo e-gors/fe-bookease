@@ -17,15 +17,21 @@ import {
 import MenuIcon from "@mui/icons-material/Menu";
 import AdbIcon from "@mui/icons-material/Adb";
 import { TextButton, OutlinedButton } from "../components/CustomButtons";
-import { useHistory } from "react-router-dom";
+import { useHistory, useLocation } from "react-router-dom";
 
-const pages = ["Home", "About", "Services", "Contact", "Blog"];
+const pages = ["Home", "Services", "About", "Contact", "Blog"];
 
 function PublicAppBar() {
-  const [drawerOpen, setDrawerOpen] = React.useState(false);
-  const [selectedPage, setSelectedPage] = React.useState("Home");
-
   const history = useHistory();
+  const location = useLocation();
+
+  const [drawerOpen, setDrawerOpen] = React.useState(false);
+
+  // Extract the pathname without the leading slash
+  const currentPath = location.pathname.slice(1).toLowerCase();
+  const initialPage =
+    pages.find((page) => page.toLowerCase() === currentPath) || "Home";
+  const [selectedPage, setSelectedPage] = React.useState(initialPage);
 
   const handleOpenNavMenu = () => {
     setDrawerOpen(true);
@@ -35,14 +41,57 @@ function PublicAppBar() {
     setDrawerOpen(false);
   };
 
+  const scrollToSection = (section) => {
+    const element = document.getElementById(section);
+    if (element) {
+      const offset = -60; // Adjust the offset value as needed
+      const elementPosition = element.getBoundingClientRect().top + window.scrollY;
+      const offsetPosition = elementPosition + offset;
+  
+      window.scrollTo({
+        top: offsetPosition,
+        behavior: "smooth",
+      });
+    }
+  };
+  
+
   const handlePageClick = (page) => {
     setSelectedPage(page);
+
+    if (currentPath === "login" || currentPath === "signup") {
+      // Redirect to homepage with the section hash
+      // history.push(`/#${page.toLowerCase()}`);
+      history.push("/");
+    } else {
+      // Scroll to section if already on homepage
+      scrollToSection(page.toLowerCase());
+    }
     setDrawerOpen(false);
   };
 
   const handleNavigate = (link) => {
     history.push(link);
   };
+
+  React.useEffect(() => {
+    const unlisten = history.listen((location) => {
+      if (location.hash) {
+        const section = location.hash.slice(1);
+        scrollToSection(section);
+        setSelectedPage(pages.find(page => page.toLowerCase() === section) || "Home");
+      }
+    });
+
+    if (currentPath && currentPath !== "login" && currentPath !== "signup") {
+      scrollToSection(currentPath);
+      setSelectedPage(pages.find(page => page.toLowerCase() === currentPath) || "Home");
+    }
+
+    return () => {
+      unlisten();
+    };
+  }, [history, currentPath]);
 
   return (
     <AppBar
@@ -112,10 +161,14 @@ function PublicAppBar() {
                       onClick={() => handlePageClick(page)}
                       sx={{
                         backgroundColor:
-                          selectedPage === page ? "#FE9D8C" : "transparent",
+                          currentPath !== "login" && selectedPage === page
+                            ? "#FE9D8C"
+                            : "transparent",
                         "&:hover": {
                           backgroundColor:
-                            selectedPage === page ? "#FE9D8C" : "#FFD1C0",
+                            currentPath !== "login" && selectedPage === page
+                              ? "#FE9D8C"
+                              : "#FFD1C0",
                         },
                       }}
                     >
@@ -145,7 +198,9 @@ function PublicAppBar() {
                   mx: 2,
                   textTransform: "none",
                   backgroundColor:
-                    selectedPage === page ? "#FE9D8C" : "transparent",
+                    currentPath !== "login" && selectedPage === page
+                      ? "#FE9D8C"
+                      : "transparent",
                   "&::first-letter": {
                     textTransform: "uppercase",
                   },
@@ -154,7 +209,7 @@ function PublicAppBar() {
                   },
                 }}
               >
-                {page.toLowerCase()}
+                {page}
               </Button>
             ))}
           </Box>

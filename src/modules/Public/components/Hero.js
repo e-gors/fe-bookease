@@ -21,6 +21,7 @@ export default function Hero() {
         gap: 5, // Add gap between grid items
         margin: "auto",
       }}
+      id="home"
     >
       <Box>
         <Typography
@@ -30,13 +31,16 @@ export default function Hero() {
             fontWeight: "bold",
             letterSpacing: 2,
             fontSize: { xs: 24, sm: 36, md: 50 },
-            mt: 2,
-            mb: 2
+            my: 2,
           }}
         >
           Find and Book the Best Services Near You
         </Typography>
-        <Typography variant="subtitle1" gutterBottom sx={{ letterSpacing: 1 }}>
+        <Typography
+          variant="subtitle1"
+          gutterBottom
+          sx={{ letterSpacing: { xs: 0, md: 1 } }}
+        >
           From medical appointments to pet services, we've got you covered. Our
           offerings include hair and beauty services, spa treatments, restaurant
           reservations, hotel accommodations, tutoring, event venues, travel
