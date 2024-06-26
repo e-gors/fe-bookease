@@ -17,8 +17,8 @@ export default function Homepage() {
       <Hero />
       <Services />
       <About />
-      <Contact />
       <Blog />
+      <Contact />
     </Box>
   );
 }

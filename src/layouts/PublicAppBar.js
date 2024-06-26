@@ -19,7 +19,7 @@ import AdbIcon from "@mui/icons-material/Adb";
 import { TextButton, OutlinedButton } from "../components/CustomButtons";
 import { useHistory, useLocation } from "react-router-dom";
 
-const pages = ["Home", "Services", "About", "Contact", "Blog"];
+const pages = ["Home", "Services", "About", "Blog", "Contact"];
 
 function PublicAppBar() {
   const history = useHistory();

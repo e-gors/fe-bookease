@@ -11,7 +11,7 @@ export default function Hero() {
     <Box
       sx={{
         height: "auto",
-        minHeight: "calc(90vh - 60px)",
+        minHeight: "calc(100vh - 60px)",
         display: "grid",
         gridTemplateColumns: { xs: "1fr", md: "1fr 1fr" },
         width: "90%",

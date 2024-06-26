@@ -12,7 +12,7 @@ import {
   Container,
   InputAdornment,
   CircularProgress,
-  IconButton
+  IconButton,
 } from "@mui/material";
 import Http from "../../../utils/Http";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
@@ -27,9 +27,12 @@ import PersonIcon from "@mui/icons-material/Person";
 import LockIcon from "@mui/icons-material/Lock";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
-import ToastNotificationContainer from "../../../components/ToastNotificationContainer";
-import ToastNotification from "../../../components/ToastNotification";
-import ReeValidate from 'ree-validate-18';
+import {
+  ToastNotificationContainer,
+  ToastNotification,
+  options,
+} from "../../../components/ToastNotificationComponents";
+import ReeValidate from "ree-validate-18";
 
 const validator = new ReeValidate.Validator({
   email: "required|email",
@@ -55,16 +58,6 @@ function Copyright(props) {
 }
 
 const theme = createTheme();
-
-const options = {
-  position: "top-right",
-  autoClose: 3000,
-  hideProgressBar: false,
-  draggable: true,
-  draggableDirection: "x" | "y",
-  draggablePercent: 60,
-  theme: "colored",
-};
 
 export default function Login() {
   const history = useHistory();
@@ -248,7 +241,11 @@ export default function Login() {
                       onClick={handleClickShowPassword}
                       onMouseDown={handleMouseDownPassword}
                     >
-                      {showPassword ? <VisibilityOffIcon /> : <VisibilityIcon />}
+                      {showPassword ? (
+                        <VisibilityOffIcon />
+                      ) : (
+                        <VisibilityIcon />
+                      )}
                     </IconButton>
                   </InputAdornment>
                 ),

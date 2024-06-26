@@ -19,7 +19,8 @@ export default function About() {
         alignItems: "center",
         alignContent: "center",
         gap: 5, // Add gap between grid items
-        margin: "auto",
+        mx: "auto",
+        my: {xs: 5, md: 3}
       }}
       id="about"
     >

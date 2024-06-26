@@ -1,5 +1,5 @@
 import { Box, Grid, Typography } from "@mui/material";
-import CustomCard from "../../../components/CusomCard";
+import ServicesCard from "../../../components/ServicesCard";
 
 const data = [
   {
@@ -78,7 +78,10 @@ const data = [
 
 export default function Services() {
   return (
-    <Box sx={{ flexGrow: 1, width: "90%", margin: "auto" }} id="services">
+    <Box
+      sx={{ flexGrow: 1, width: "90%", mx: "auto", my: { xs: 5, md: 3 } }}
+      id="services"
+    >
       <Typography
         variant="h3"
         sx={{
@@ -107,7 +110,7 @@ export default function Services() {
           data.map((d, i) => {
             return (
               <Grid key={i} item xs={12} sm={6} md={3}>
-                <CustomCard
+                <ServicesCard
                   url={d.imageUrl}
                   title={d.title}
                   description={d.description}
