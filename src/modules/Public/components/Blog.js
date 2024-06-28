@@ -1,4 +1,12 @@
-import { Avatar, Box, Chip, Grid, Stack, Typography } from "@mui/material";
+import {
+  Avatar,
+  Box,
+  Chip,
+  Grid,
+  Pagination,
+  Stack,
+  Typography,
+} from "@mui/material";
 import ManWithCalendar from "../../../assets/man-with-calendar.jpg";
 import React from "react";
 import BlogsCard from "../../../components/BlogsCard";
@@ -18,7 +26,7 @@ const services = [
 const data = [
   {
     imageUrl: "https://images.unsplash.com/photo-1519125323398-675f0ddb6308",
-   subTitle: "Service 1",
+    subTitle: "Service 1",
     title: "Mountain Adventure",
     description:
       "A breathtaking view of a hiker overlooking a vast mountain range. A stunning cityscape showcasing a bustling metropolis illuminated by night lights.",
@@ -46,7 +54,7 @@ const data = [
   },
   {
     imageUrl: "https://images.unsplash.com/photo-1519125323398-675f0ddb6308",
-   subTitle: "Service 1",
+    subTitle: "Service 1",
     title: "Mountain Adventure",
     description:
       "A breathtaking view of a hiker overlooking a vast mountain range. A stunning cityscape showcasing a bustling metropolis illuminated by night lights.",
@@ -74,7 +82,7 @@ const data = [
   },
   {
     imageUrl: "https://images.unsplash.com/photo-1519125323398-675f0ddb6308",
-   subTitle: "Service 1",
+    subTitle: "Service 1",
     title: "Mountain Adventure",
     description:
       "A breathtaking view of a hiker overlooking a vast mountain range. A stunning cityscape showcasing a bustling metropolis illuminated by night lights.",
@@ -107,13 +115,12 @@ export default function Blog() {
 
   const handleSelectItem = (item) => {
     setSelectedItem(item);
-    console.log(item);
   };
 
   return (
     <Box
       id="blog"
-      sx={{ height: "auto", minHeight: "90vh", width: "90%", mx: "auto" }}
+      sx={{ height: "auto", minHeight: "100vh", width: "90%", mx: "auto" }}
     >
       <Box textAlign={{ xs: "left", md: "center" }}>
         <Typography
@@ -191,10 +198,7 @@ export default function Blog() {
           />
         </Box>
         <Box>
-          <Typography
-            variant="subtitle1"
-            sx={{ color: "#5ABED5" }}
-          >
+          <Typography variant="subtitle1" sx={{ color: "#5ABED5" }}>
             Service 1
           </Typography>
           <Typography
@@ -246,6 +250,27 @@ export default function Blog() {
             );
           })}
       </Grid>
+      <Box
+        sx={{
+          mt: 5,
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        <Pagination
+          count={100}
+          variant="outlined"
+          size="small"
+          color="primary"
+          siblingCount={1}
+          sx={{
+            "& .MuiPaginationItem-root": {
+              mx: 0.5,
+            },
+          }}
+        />
+      </Box>
     </Box>
   );
 }

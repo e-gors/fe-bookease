@@ -13,13 +13,40 @@ import {
   ListItemButton,
   ListItemText,
   Stack,
+  ListItemIcon,
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import AdbIcon from "@mui/icons-material/Adb";
 import { TextButton, OutlinedButton } from "../components/CustomButtons";
 import { useHistory, useLocation } from "react-router-dom";
+import HomeIcon from "@mui/icons-material/Home";
+import HomeRepairServiceIcon from "@mui/icons-material/HomeRepairService";
+import InfoIcon from "@mui/icons-material/Info";
+import BookIcon from "@mui/icons-material/Book";
+import ContactPageIcon from "@mui/icons-material/ContactPage";
 
-const pages = ["Home", "Services", "About", "Blog", "Contact"];
+const pages = [
+  {
+    icon: <HomeIcon />,
+    name: "Home",
+  },
+  {
+    icon: <HomeRepairServiceIcon />,
+    name: "Services",
+  },
+  {
+    icon: <InfoIcon />,
+    name: "About",
+  },
+  {
+    icon: <BookIcon />,
+    name: "Blog",
+  },
+  {
+    icon: <ContactPageIcon />,
+    name: "Contact",
+  },
+];
 
 function PublicAppBar() {
   const history = useHistory();
@@ -27,10 +54,9 @@ function PublicAppBar() {
 
   const [drawerOpen, setDrawerOpen] = React.useState(false);
 
-  // Extract the pathname without the leading slash
   const currentPath = location.pathname.slice(1).toLowerCase();
   const initialPage =
-    pages.find((page) => page.toLowerCase() === currentPath) || "Home";
+    pages.find((page) => page.name.toLowerCase() === currentPath) || "Home";
   const [selectedPage, setSelectedPage] = React.useState(initialPage);
 
   const handleOpenNavMenu = () => {
@@ -44,29 +70,21 @@ function PublicAppBar() {
   const scrollToSection = (section) => {
     const element = document.getElementById(section);
     if (element) {
-      const offset = -60; // Adjust the offset value as needed
-      const elementPosition = element.getBoundingClientRect().top + window.scrollY;
+      const offset = -60;
+      const elementPosition =
+        element.getBoundingClientRect().top + window.scrollY;
       const offsetPosition = elementPosition + offset;
-  
+
       window.scrollTo({
         top: offsetPosition,
         behavior: "smooth",
       });
     }
   };
-  
 
   const handlePageClick = (page) => {
     setSelectedPage(page);
-
-    if (currentPath === "login" || currentPath === "signup") {
-      // Redirect to homepage with the section hash
-      // history.push(`/#${page.toLowerCase()}`);
-      history.push("/");
-    } else {
-      // Scroll to section if already on homepage
-      scrollToSection(page.toLowerCase());
-    }
+    scrollToSection(page.toLowerCase());
     setDrawerOpen(false);
   };
 
@@ -75,21 +93,48 @@ function PublicAppBar() {
   };
 
   React.useEffect(() => {
+    const handleScroll = () => {
+      const sectionOffsets = pages.map((page) => {
+        const link = page.name;
+        const section = document.getElementById(link.toLowerCase());
+        return {
+          link,
+          offsetTop: section?.offsetTop || 0,
+        };
+      });
+
+      const scrollPosition = window.scrollY + 80;
+
+      for (let i = sectionOffsets.length - 1; i >= 0; i--) {
+        if (scrollPosition >= sectionOffsets[i].offsetTop) {
+          setSelectedPage(sectionOffsets[i].link);
+          break;
+        }
+      }
+    };
+
     const unlisten = history.listen((location) => {
       if (location.hash) {
         const section = location.hash.slice(1);
         scrollToSection(section);
-        setSelectedPage(pages.find(page => page.toLowerCase() === section) || "Home");
+        setSelectedPage(
+          pages.find((page) => page.name.toLowerCase() === section) || "Home"
+        );
       }
     });
 
-    if (currentPath && currentPath !== "login" && currentPath !== "signup") {
+    if (currentPath && currentPath !== "login" && currentPath !== "register") {
       scrollToSection(currentPath);
-      setSelectedPage(pages.find(page => page.toLowerCase() === currentPath) || "Home");
+      setSelectedPage(
+        pages.find((page) => page.name.toLowerCase() === currentPath) || "Home"
+      );
     }
+
+    window.addEventListener("scroll", handleScroll);
 
     return () => {
       unlisten();
+      window.removeEventListener("scroll", handleScroll);
     };
   }, [history, currentPath]);
 
@@ -119,7 +164,7 @@ function PublicAppBar() {
               variant="h6"
               noWrap
               component="a"
-              href="#app-bar-with-responsive-menu"
+              href="/"
               sx={{
                 mr: 2,
                 display: { xs: "none", md: "flex" },
@@ -154,28 +199,61 @@ function PublicAppBar() {
                 sx: { width: "50%" },
               }}
             >
+              <Box sx={{ display: "flex", alignItems: "center", m: 2 }}>
+                <AdbIcon sx={{ mr: 1 }} />
+                <Typography
+                  variant="h6"
+                  noWrap
+                  component="a"
+                  href="/"
+                  sx={{
+                    mr: 2,
+                    display: "flex",
+                    fontFamily: "Outfit",
+                    fontWeight: 700,
+                    letterSpacing: ".1rem",
+                    color: "inherit",
+                    textDecoration: "none",
+                    fontSize: 16,
+                  }}
+                >
+                  Efren
+                </Typography>
+              </Box>
               <List>
-                {pages.map((page) => (
-                  <ListItem key={page} disablePadding>
-                    <ListItemButton
-                      onClick={() => handlePageClick(page)}
-                      sx={{
-                        backgroundColor:
-                          currentPath !== "login" && selectedPage === page
-                            ? "#FE9D8C"
-                            : "transparent",
-                        "&:hover": {
+                {currentPath !== "login" &&
+                  currentPath !== "register" &&
+                  pages.map((page, i) => (
+                    <ListItem key={i} disablePadding>
+                      <ListItemButton
+                        onClick={() => handlePageClick(page.name)}
+                        sx={{
                           backgroundColor:
-                            currentPath !== "login" && selectedPage === page
+                            currentPath !== "login" &&
+                            selectedPage === page.name
                               ? "#FE9D8C"
-                              : "#FFD1C0",
-                        },
-                      }}
-                    >
-                      <ListItemText primary={page} />
+                              : "transparent",
+                          "&:hover": {
+                            backgroundColor:
+                              currentPath !== "login" &&
+                              selectedPage === page.name
+                                ? "#FE9D8C"
+                                : "#FFD1C0",
+                          },
+                        }}
+                      >
+                        <ListItemIcon>{page.icon}</ListItemIcon>
+                        <ListItemText primary={page.name} sx={{ ml: -2 }} />
+                      </ListItemButton>
+                    </ListItem>
+                  ))}
+                {(currentPath === "login" || currentPath === "register") && (
+                  <ListItem disablePadding>
+                    <ListItemButton onClick={() => handleNavigate("/")}>
+                      <ListItemText primary="Home" />
                     </ListItemButton>
                   </ListItem>
-                ))}
+                )}
               </List>
             </Drawer>
           </Box>
@@ -187,38 +265,45 @@ function PublicAppBar() {
               justifyContent: "center",
             }}
           >
-            {pages.map((page) => (
-              <Button
-                key={page}
-                onClick={() => handlePageClick(page)}
-                sx={{
-                  my: 2,
-                  color: "black",
-                  display: "block",
-                  mx: 2,
-                  textTransform: "none",
-                  backgroundColor:
-                    currentPath !== "login" && selectedPage === page
-                      ? "#FE9D8C"
-                      : "transparent",
-                  "&::first-letter": {
-                    textTransform: "uppercase",
-                  },
-                  "&:hover": {
-                    backgroundColor: "#FE9D8C",
-                  },
-                }}
-              >
-                {page}
-              </Button>
-            ))}
+            {currentPath !== "login" &&
+              currentPath !== "register" &&
+              pages.map((page, i) => (
+                <Button
+                  key={i}
+                  onClick={() => handlePageClick(page.name)}
+                  sx={{
+                    my: 2,
+                    color: "black",
+                    display: "block",
+                    mx: 2,
+                    textTransform: "none",
+                    backgroundColor:
+                      currentPath !== "login" && selectedPage === page.name
+                        ? "#FE9D8C"
+                        : "transparent",
+                    "&::first-letter": {
+                      textTransform: "uppercase",
+                    },
+                    "&:hover": {
+                      backgroundColor: "#FE9D8C",
+                    },
+                  }}
+                >
+                  {page.name}
+                </Button>
+              ))}
           </Box>
 
           <Stack direction="row" spacing={1}>
             <TextButton variant="text" onClick={() => handleNavigate("/login")}>
               Login
             </TextButton>
-            <OutlinedButton variant="outlined">Sign Up Now</OutlinedButton>
+            <OutlinedButton
+              variant="outlined"
+              onClick={() => handleNavigate("/register")}
+            >
+              Sign Up Now
+            </OutlinedButton>
           </Stack>
         </Toolbar>
       </Container>

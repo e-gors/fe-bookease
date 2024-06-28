@@ -5,8 +5,15 @@ import {
   OutlinedButton,
 } from "../../../components/CustomButtons";
 import ManWithCalendar from "../../../assets/man-with-calendar.jpg";
+import { useHistory } from "react-router-dom";
 
 export default function Hero() {
+  const history = useHistory();
+
+  const handleNavigate = (link) => {
+    history.push(link);
+  };
+
   return (
     <Box
       sx={{
@@ -49,7 +56,12 @@ export default function Hero() {
         </Typography>
         <Stack direction="row" spacing={2} mt={2}>
           <ContainedButton variant="contained">Get Started</ContainedButton>
-          <OutlinedButton variant="outlined">Sign Up Now</OutlinedButton>
+          <OutlinedButton
+            variant="outlined"
+            oncLick={() => handleNavigate("/register")}
+          >
+            Sign Up Now
+          </OutlinedButton>
         </Stack>
       </Box>
       <Box>

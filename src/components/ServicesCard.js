@@ -129,7 +129,6 @@ export default function ServicesCard(props) {
             </CardActionArea>
             <CardActions>
               <Stack
-                // direction={{ xs: "column", sm: "row" }}
                 direction="row"
                 spacing={2}
               >

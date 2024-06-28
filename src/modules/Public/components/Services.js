@@ -79,7 +79,7 @@ const data = [
 export default function Services() {
   return (
     <Box
-      sx={{ flexGrow: 1, width: "90%", mx: "auto", my: { xs: 5, md: 3 } }}
+      sx={{ flexGrow: 1, width: "90%", mx: "auto", my: 5 }}
       id="services"
     >
       <Typography

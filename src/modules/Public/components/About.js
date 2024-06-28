@@ -11,7 +11,7 @@ export default function About() {
     <Box
       sx={{
         height: "auto",
-        minHeight: "90vh",
+        minHeight: "100vh",
         display: "grid",
         gridTemplateColumns: { xs: "1fr", md: "1fr 1fr" },
         width: "90%",
@@ -20,7 +20,7 @@ export default function About() {
         alignContent: "center",
         gap: 5, // Add gap between grid items
         mx: "auto",
-        my: {xs: 5, md: 3}
+        my: 5
       }}
       id="about"
     >

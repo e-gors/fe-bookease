@@ -109,7 +109,7 @@ export default function Contact() {
     <ToastNotificationContainer />
       <Box
         sx={{
-          minHeight: "100vh",
+          height: "auto",
           display: "grid",
           gridTemplateColumns: { xs: "1fr", md: "1fr 2fr" },
           width: "90%",
@@ -118,7 +118,7 @@ export default function Contact() {
           alignContent: "center",
           gap: 5,
           mx: "auto",
-          my: { xs: 5, md: 3 },
+          my: {xs: 5, md: 10},
         }}
         id="contact"
       >

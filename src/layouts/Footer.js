@@ -1,4 +1,11 @@
-import { Box, Divider, Grid, Stack, Typography } from "@mui/material";
+import {
+  Box,
+  Divider,
+  Grid,
+  IconButton,
+  Stack,
+  Typography,
+} from "@mui/material";
 import AlternateEmailIcon from "@mui/icons-material/AlternateEmail";
 import PhoneIcon from "@mui/icons-material/Phone";
 import FacebookIcon from "@mui/icons-material/Facebook";
@@ -8,8 +15,84 @@ import TwitterIcon from "@mui/icons-material/Twitter";
 import YouTubeIcon from "@mui/icons-material/YouTube";
 import PinterestIcon from "@mui/icons-material/Pinterest";
 import { TextButton } from "../components/CustomButtons";
+import { useHistory, useLocation } from "react-router-dom";
+import React from "react";
+
+const infoLinks = [
+  "About Us",
+  "Contact Us",
+  "Terms and Conditions",
+  "Privacy Policy",
+];
+const pages = ["Home", "Services", "About Us", "Blog", "Contact Us"];
+
+const icons = [
+  {
+    icon: <FacebookIcon />,
+    name: "Facebook",
+    link: "https://www.facebook.com/",
+  },
+  {
+    icon: <InstagramIcon />,
+    name: "Instagram",
+    link: "https://www.instagram.com/",
+  },
+  {
+    icon: <LinkedInIcon />,
+    name: "LinkedIn",
+    link: "https://www.linkedin.com/",
+  },
+  {
+    icon: <TwitterIcon />,
+    name: "Twitter",
+    link: "https://www.twitter.com/",
+  },
+  {
+    icon: <YouTubeIcon />,
+    name: "YouTube",
+    link: "https://www.youtube.com/",
+  },
+  {
+    icon: <PinterestIcon />,
+    name: "Pinterest",
+    link: "https://www.pinterest.com/",
+  },
+];
 
 export default function Footer() {
+  const history = useHistory();
+  const location = useLocation();
+
+  const scrollToSection = (section) => {
+    const element = document.getElementById(section);
+    if (element) {
+      const offset = -60;
+      const elementPosition =
+        element.getBoundingClientRect().top + window.scrollY;
+      const offsetPosition = elementPosition + offset;
+
+      window.scrollTo({
+        top: offsetPosition,
+        behavior: "smooth", // Smooth scrolling behavior
+      });
+    }
+  };
+
+  const handlePageClick = (page) => {
+    const isIncluded = pages.includes(page);
+    const link = page.split(" ");
+
+    if (isIncluded) {
+      scrollToSection(link[0]?.toLowerCase());
+    } else {
+      handleNavigate(`/${link[0]?.toLowerCase()}`);
+    }
+  };
+
+  const handleNavigate = (link) => {
+    history.push(link);
+  };
+
   return (
     <Box
       sx={{
@@ -20,69 +103,92 @@ export default function Footer() {
       }}
     >
       <Grid container spacing={2} alignItems="center" justifyContent="center">
-        <Grid item sx={12} md={4}>
-          <Box>
-            <Stack direction="row" spacing={2} my={1}>
-              <AlternateEmailIcon />
-              <Typography>egoronweb@gmail.com</Typography>
-            </Stack>
-            <Stack direction="row" spacing={2} my={1}>
-              <PhoneIcon />
-              <Typography>Support (+63) 905 417 0203</Typography>
-            </Stack>
-            <Stack direction="row" spacing={2} mt={5}>
-              <FacebookIcon />
-              <InstagramIcon />
-              <LinkedInIcon />
-              <TwitterIcon />
-              <YouTubeIcon />
-              <PinterestIcon />
-            </Stack>
-          </Box>
-        </Grid>
-        <Grid item xs={12} md={8}>
+        <Grid item xs={12} md={4}>
           <Box
             sx={{
               display: "flex",
               justifyContent: "space-evenly",
               alignItems: "flex-start",
-              mt: { xs: 5, md: 0 },
             }}
           >
-            <Stack
-              direction="column"
-              justifyContent="center"
-              alignItems="flex-start"
-            >
-              <Typography sx={{ fontWeight: "bold", mb: 2 }}>
-                Information
-              </Typography>
-              <TextButton sx={{ color: "white" }}>About Us</TextButton>
-              <TextButton sx={{ color: "white" }}>Contact Us</TextButton>
-              <TextButton sx={{ color: "white" }}>
-                Terms and Conditions
-              </TextButton>
-              <TextButton sx={{ color: "white" }}>Privacy Policy</TextButton>
-            </Stack>
-            <Stack
-              direction="column"
-              justifyContent="center"
-              alignItems="flex-start"
-            >
-              <Typography sx={{ fontWeight: "bold", mb: 2 }}>
-                Quick Links
-              </Typography>
-              <TextButton sx={{ color: "white" }}>Home</TextButton>
-              <TextButton sx={{ color: "white" }}>Services</TextButton>
-              <TextButton sx={{ color: "white" }}>About</TextButton>
-              <TextButton sx={{ color: "white" }}>Blog</TextButton>
-              <TextButton sx={{ color: "white" }}>Contact</TextButton>
-            </Stack>
+            <Box>
+              <Stack direction="row" spacing={2} my={1}>
+                <AlternateEmailIcon />
+                <Typography>egoronweb@gmail.com</Typography>
+              </Stack>
+              <Stack direction="row" spacing={2} my={1}>
+                <PhoneIcon />
+                <Typography>Support (+63) 905 417 0203</Typography>
+              </Stack>
+              <Stack direction="row" spacing={1} mt={5}>
+                {icons.map((icon, index) => (
+                  <IconButton
+                    key={index}
+                    aria-label={icon.name}
+                    sx={{ color: "inherit" }}
+                    onClick={() => handleNavigate(icon.link)}
+                  >
+                    {icon.icon}
+                  </IconButton>
+                ))}
+              </Stack>
+            </Box>
           </Box>
         </Grid>
+        {location.pathname !== "/login" && location.pathname !== "/register" && (
+          <Grid item xs={12} md={8}>
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: "space-evenly",
+                alignItems: "flex-start",
+                mt: { xs: 5, md: 0 },
+              }}
+            >
+              <Stack
+                direction="column"
+                justifyContent="center"
+                alignItems="flex-start"
+              >
+                <Typography sx={{ fontWeight: "bold", mb: 2 }}>
+                  Information
+                </Typography>
+                {infoLinks.map((link, i) => (
+                  <TextButton
+                    key={i}
+                    sx={{ color: "inherit" }}
+                    onClick={() => handlePageClick(link)}
+                  >
+                    {link}
+                  </TextButton>
+                ))}
+              </Stack>
+              <Stack
+                direction="column"
+                justifyContent="center"
+                alignItems="flex-start"
+              >
+                <Typography sx={{ fontWeight: "bold", mb: 2 }}>
+                  Quick Links
+                </Typography>
+                {pages.map((page, i) => (
+                  <TextButton
+                    key={i}
+                    sx={{ color: "inherit" }}
+                    onClick={() => handlePageClick(page)}
+                  >
+                    {page}
+                  </TextButton>
+                ))}
+              </Stack>
+            </Box>
+          </Grid>
+        )}
       </Grid>
       <Divider sx={{ color: "white", my: 2 }} />
-      <Typography textAlign="center">All rights Reserved @ 2024</Typography>
+      <Typography textAlign="center">
+        All rights Reserved ©{new Date().getFullYear()}
+      </Typography>
     </Box>
   );
 }
