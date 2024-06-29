@@ -9,17 +9,17 @@ import {
   Typography,
   createTheme,
 } from "@mui/material";
-import FormField from "../../../components/FormField";
+import FormField from "../../../../components/FormField";
 import React from "react";
 import ReeValidate from "ree-validate-18";
-import { ContainedButton } from "../../../components/CustomButtons";
+import { ContainedButton } from "../../../../components/CustomButtons";
 import AlternateEmailIcon from "@mui/icons-material/AlternateEmail";
 import PhoneIcon from "@mui/icons-material/Phone";
 import {
   ToastNotificationContainer,
   ToastNotification,
   options,
-} from "../../../components/ToastNotificationComponents";
+} from "../../../../components/ToastNotificationComponents";
 
 const validator = new ReeValidate.Validator({
   firstname: "required",

@@ -23,18 +23,18 @@ export const handleErrorResponse = (err) => {
 };
 
 export const Validator = (fields) => {
-  const validator = new ReeValidate(fields);
+  const validator = new ReeValidate.Validator(fields);
 
-  // const dictionary = {
-  //   en: {
-  //     messages: {
-  //       required: () => "This field is required!",
-  //       number: () => "This must be a number!",
-  //     },
-  //   },
-  // };
+  const dictionary = {
+    en: {
+      messages: {
+        required: () => "This field is required!",
+        number: () => "This must be a number!",
+      },
+    },
+  };
 
-  // validator.localize(dictionary);
+  validator.localize(dictionary);
 
   return validator;
 };
@@ -56,3 +56,39 @@ export const ToastNotificationOption = () => {
 
   return options;
 };
+
+export const isEmpty = (value) => {
+  if (typeof value === "string") {
+    return !value.trim();
+  }
+  if (Array.isArray(value)) {
+    return value.length === 0;
+  }
+  if (value && typeof value === "object") {
+    return Object.keys(value).length === 0;
+  }
+  return !value;
+};
+
+export const HandleCache = (data, method) => {
+  if (Array.isArray(data)) {
+    data.forEach(item => {
+      if (item.method === "set") {
+        localStorage.setItem(item.name, JSON.stringify(item.data));
+      } else if (item.method === "get") {
+        return JSON.parse(localStorage.getItem(item.name));
+      } else if (item.method === "remove") {
+        localStorage.removeItem(item.name);
+      }
+    });
+  } else {
+    if (method === "set") {
+      localStorage.setItem(data.name, JSON.stringify(data.data));
+    } else if (method === "get") {
+      return JSON.parse(localStorage.getItem(data.name));
+    } else if (method === "remove") {
+      localStorage.removeItem(data.name);
+    }
+  }
+};
+

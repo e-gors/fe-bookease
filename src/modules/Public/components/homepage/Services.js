@@ -1,5 +1,5 @@
 import { Box, Grid, Typography } from "@mui/material";
-import ServicesCard from "../../../components/ServicesCard";
+import ServicesCard from "../../../../components/ServicesCard";
 
 const data = [
   {

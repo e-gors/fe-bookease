@@ -17,6 +17,7 @@ import PinterestIcon from "@mui/icons-material/Pinterest";
 import { TextButton } from "../components/CustomButtons";
 import { useHistory, useLocation } from "react-router-dom";
 import React from "react";
+import Copyright from "../components/Copyright";
 
 const infoLinks = [
   "About Us",
@@ -186,9 +187,8 @@ export default function Footer() {
         )}
       </Grid>
       <Divider sx={{ color: "white", my: 2 }} />
-      <Typography textAlign="center">
-        All rights Reserved ©{new Date().getFullYear()}
-      </Typography>
+      <Copyright />
+
     </Box>
   );
 }

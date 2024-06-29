@@ -1,8 +1,8 @@
-import Hero from "../components/Hero";
-import About from "../components/About";
-import Services from "../components/Services";
-import Contact from "../components/Contact";
-import Blog from "../components/Blog";
+import Hero from "../components/homepage/Hero";
+import About from "../components/homepage/About";
+import Services from "../components/homepage/Services";
+import Contact from "../components/homepage/Contact";
+import Blog from "../components/homepage/Blog";
 
 export default function Homepage() {
   return (

@@ -7,9 +7,9 @@ import {
   Stack,
   Typography,
 } from "@mui/material";
-import ManWithCalendar from "../../../assets/man-with-calendar.jpg";
+import ManWithCalendar from "../../../../assets/man-with-calendar.jpg";
 import React from "react";
-import BlogsCard from "../../../components/BlogsCard";
+import BlogsCard from "../../../../components/BlogsCard";
 
 const services = [
   "All",
