@@ -1,11 +1,11 @@
 const routes = [
   {
     path: "/",
-    component: "modules/Public/pages/Homepage",
+    component: "pages/Homepage",
   },
   {
     path: "/register",
-    component: "modules/Public/pages/Register",
+    component: "pages/Register",
   },
   {
     path: "/login",
@@ -13,7 +13,7 @@ const routes = [
   },
   {
     path: "/dashboard",
-    component: "pages/App",
+    component: "pages/Dashboard",
     auth: true,
   },
   {

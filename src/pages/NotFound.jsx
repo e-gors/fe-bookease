@@ -1,17 +1,17 @@
 import { Helmet } from "react-helmet-async";
 
-import UserView from "../modules/Private/sections/user/view/UserView";
+import NotFoundView from "../modules/Public/sections/error/view/NotFoundView";
 
 // ----------------------------------------------------------------------
 
-export default function UserPage() {
+export default function NotFoundPage() {
   return (
     <>
       <Helmet>
-        <title> User | BookEase </title>
+        <title> 404 Page Not Found </title>
       </Helmet>
 
-      <UserView />
+      <NotFoundView />
     </>
   );
 }

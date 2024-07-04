@@ -1,17 +1,17 @@
 import { Helmet } from "react-helmet-async";
 
-import UserView from "../modules/Private/sections/user/view/UserView";
+import HomepageView from "../modules/Public/sections/homepage/view/HomepageView";
 
 // ----------------------------------------------------------------------
 
-export default function UserPage() {
+export default function Homepage() {
   return (
     <>
       <Helmet>
-        <title> User | BookEase </title>
+        <title> Homepage | BookEase </title>
       </Helmet>
 
-      <UserView />
+      <HomepageView />
     </>
   );
 }

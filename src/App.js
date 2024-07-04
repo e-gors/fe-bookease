@@ -4,7 +4,7 @@ import routes from "./routes/routes";
 import Private from "./routes/Private";
 import Public from "./routes/Public";
 import ThemeProvider from "./theme";
-import NotFound from "./pages/PageNotFound";
+import NotFoundPage from "./pages/NotFound";
 
 import "./global.css";
 
@@ -20,7 +20,7 @@ function App() {
               return <Public exact key={index} {...route} />;
             }
           })}
-          <Route component={NotFound} />
+          <Route component={NotFoundPage} />
         </Switch>
       </BrowserRouter>
     </ThemeProvider>

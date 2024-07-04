@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Typography, Box } from "@mui/material";
 import axios from "axios";
 
-const GOOGLE_API_KEY = "AIzaSyCj5RVD3YrplhqF7qxqxELtlfJiYtmy75o"; // Replace with your actual API key
+const GOOGLE_API_KEY = process.env.REACT_APP_GOOGLE_API_KEY;
 
 const GetLocation = () => {
   const [addressDetails, setAddressDetails] = useState(null);
