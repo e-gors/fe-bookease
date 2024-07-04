@@ -30,6 +30,8 @@ export const Validator = (fields) => {
       messages: {
         required: () => "This field is required!",
         number: () => "This must be a number!",
+        regex: () => "This field format is invalid!",
+        length: () => "This field must be 11 characters length!"
       },
     },
   };
@@ -44,7 +46,7 @@ export const isAuth = () => {
 };
 
 export const ToastNotificationOption = () => {
-   const options = {
+  const options = {
     position: "top-right",
     autoClose: 3000,
     hideProgressBar: false,
@@ -72,7 +74,7 @@ export const isEmpty = (value) => {
 
 export const HandleCache = (data, method) => {
   if (Array.isArray(data)) {
-    data.forEach(item => {
+    data.forEach((item) => {
       if (item.method === "set") {
         localStorage.setItem(item.name, JSON.stringify(item.data));
       } else if (item.method === "get") {
@@ -91,4 +93,3 @@ export const HandleCache = (data, method) => {
     }
   }
 };
-

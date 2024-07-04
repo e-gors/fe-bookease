@@ -3,22 +3,27 @@ import { createBrowserHistory } from "history";
 import routes from "./routes/routes";
 import Private from "./routes/Private";
 import Public from "./routes/Public";
-import NotFound from "./routes/NotFound";
+import ThemeProvider from "./theme";
+import NotFound from "./pages/PageNotFound";
+
+import "./global.css";
 
 function App() {
   return (
-    <BrowserRouter history={createBrowserHistory()}>
-      <Switch>
-        {routes.map((route, index) => {
-          if (route.auth) {
-            return <Private exact key={index} {...route} />;
-          } else {
-            return <Public exact key={index} {...route} />;
-          }
-        })}
-        <Route component={NotFound} />
-      </Switch>
-    </BrowserRouter>
+    <ThemeProvider>
+      <BrowserRouter history={createBrowserHistory()}>
+        <Switch>
+          {routes.map((route, index) => {
+            if (route.auth) {
+              return <Private exact key={index} {...route} />;
+            } else {
+              return <Public exact key={index} {...route} />;
+            }
+          })}
+          <Route component={NotFound} />
+        </Switch>
+      </BrowserRouter>
+    </ThemeProvider>
   );
 }
 
