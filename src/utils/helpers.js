@@ -25,13 +25,23 @@ export const handleErrorResponse = (err) => {
 export const Validator = (fields) => {
   const validator = new ReeValidate.Validator(fields);
 
+  const formatFieldName = (field) => {
+    // replace underscores with spaces and capitalize the first letter
+    return field
+      .replace(/_/g, " ")
+      .replace(/\b\w/g, (char) => char.toUpperCase());
+  };
+
   const dictionary = {
     en: {
       messages: {
-        required: () => "This field is required!",
-        number: () => "This must be a number!",
-        regex: () => "This field format is invalid!",
-        length: () => "This field must be 11 characters length!"
+        required: (field) => `${formatFieldName(field)} is required!`,
+        email: (field) =>
+          `${formatFieldName(field)} must be a valid email address!`,
+        number: (field) => `${formatFieldName(field)} must be a number!`,
+        regex: (field) => `${formatFieldName(field)} format is invalid!`,
+        min: (field) => `${formatFieldName(field)} must be at least 6 chars length!`,
+        max: (field) => `${formatFieldName(field)} must only be 20 chars length!`,
       },
     },
   };
@@ -43,20 +53,6 @@ export const Validator = (fields) => {
 
 export const isAuth = () => {
   return !!localStorage.getItem("accessToken");
-};
-
-export const ToastNotificationOption = () => {
-  const options = {
-    position: "top-right",
-    autoClose: 3000,
-    hideProgressBar: false,
-    draggable: true,
-    draggableDirection: "x" | "y",
-    draggablePercent: 60,
-    theme: "colored",
-  };
-
-  return options;
 };
 
 export const isEmpty = (value) => {

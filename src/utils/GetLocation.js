@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Typography, Box } from "@mui/material";
+import { Box } from "@mui/material";
 import axios from "axios";
 
 const GOOGLE_API_KEY = process.env.REACT_APP_GOOGLE_API_KEY;

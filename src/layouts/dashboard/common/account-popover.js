@@ -1,36 +1,38 @@
-import { useState } from 'react';
+import { useState } from "react";
 
-import Box from '@mui/material/Box';
-import Avatar from '@mui/material/Avatar';
-import Divider from '@mui/material/Divider';
-import Popover from '@mui/material/Popover';
-import { alpha } from '@mui/material/styles';
-import MenuItem from '@mui/material/MenuItem';
-import Typography from '@mui/material/Typography';
-import IconButton from '@mui/material/IconButton';
+import Box from "@mui/material/Box";
+import Avatar from "@mui/material/Avatar";
+import Divider from "@mui/material/Divider";
+import Popover from "@mui/material/Popover";
+import { alpha } from "@mui/material/styles";
+import MenuItem from "@mui/material/MenuItem";
+import Typography from "@mui/material/Typography";
+import IconButton from "@mui/material/IconButton";
 
-import { account } from '../../../_mock/account';
+import { account } from "../../../_mock/account";
+import { useRouter } from "../../../routes/hooks";
+import { HandleCache } from "../../../utils/helpers";
 
 // ----------------------------------------------------------------------
 
 const MENU_OPTIONS = [
   {
-    label: 'Home',
-    icon: 'eva:home-fill',
+    label: "Home",
+    icon: "eva:home-fill",
   },
   {
-    label: 'Profile',
-    icon: 'eva:person-fill',
+    label: "Profile",
+    icon: "eva:person-fill",
   },
   {
-    label: 'Settings',
-    icon: 'eva:settings-2-fill',
+    label: "Settings",
+    icon: "eva:settings-2-fill",
   },
 ];
 
 // ----------------------------------------------------------------------
-
 export default function AccountPopover() {
+  const router = useRouter();
   const [open, setOpen] = useState(null);
 
   const handleOpen = (event) => {
@@ -39,6 +41,8 @@ export default function AccountPopover() {
 
   const handleClose = () => {
     setOpen(null);
+    HandleCache({ name: "accessToken" }, "remove");
+    router.push("/login");
   };
 
   return (
@@ -72,8 +76,8 @@ export default function AccountPopover() {
         open={!!open}
         anchorEl={open}
         onClose={handleClose}
-        anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
-        transformOrigin={{ vertical: 'top', horizontal: 'right' }}
+        anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
+        transformOrigin={{ vertical: "top", horizontal: "right" }}
         PaperProps={{
           sx: {
             p: 0,
@@ -87,12 +91,12 @@ export default function AccountPopover() {
           <Typography variant="subtitle2" noWrap>
             {account.displayName}
           </Typography>
-          <Typography variant="body2" sx={{ color: 'text.secondary' }} noWrap>
+          <Typography variant="body2" sx={{ color: "text.secondary" }} noWrap>
             {account.email}
           </Typography>
         </Box>
 
-        <Divider sx={{ borderStyle: 'dashed' }} />
+        <Divider sx={{ borderStyle: "dashed" }} />
 
         {MENU_OPTIONS.map((option) => (
           <MenuItem key={option.label} onClick={handleClose}>
@@ -100,13 +104,13 @@ export default function AccountPopover() {
           </MenuItem>
         ))}
 
-        <Divider sx={{ borderStyle: 'dashed', m: 0 }} />
+        <Divider sx={{ borderStyle: "dashed", m: 0 }} />
 
         <MenuItem
           disableRipple
           disableTouchRipple
           onClick={handleClose}
-          sx={{ typography: 'body2', color: 'error.main', py: 1.5 }}
+          sx={{ typography: "body2", color: "error.main", py: 1.5 }}
         >
           Logout
         </MenuItem>
