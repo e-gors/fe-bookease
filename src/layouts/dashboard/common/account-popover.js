@@ -12,6 +12,7 @@ import IconButton from "@mui/material/IconButton";
 import { account } from "../../../_mock/account";
 import { useRouter } from "../../../routes/hooks";
 import { HandleCache } from "../../../utils/helpers";
+import CustomAlert from "../../../components/CustomAlert";
 
 // ----------------------------------------------------------------------
 
@@ -34,21 +35,45 @@ const MENU_OPTIONS = [
 export default function AccountPopover() {
   const router = useRouter();
   const [open, setOpen] = useState(null);
+  const [openAlert, setOpenAlert] = useState(false);
 
-  const handleOpen = (event) => {
+  const handleOpenAlert = () => {
+    setOpenAlert(true);
+    setOpen(null);
+  };
+
+  const handleCloseAlert = () => {
+    setOpenAlert(false);
+  };
+
+  const handleOpenAccountMenu = (event) => {
     setOpen(event.currentTarget);
   };
 
   const handleClose = () => {
     setOpen(null);
-    HandleCache({ name: "accessToken" }, "remove");
+  };
+
+  const handleLogout = () => {
+    HandleCache([
+      { name: "accessToken", method: "remove" },
+      { name: "user", method: "remove" },
+    ]);
     router.push("/login");
   };
 
   return (
     <>
+      <CustomAlert
+        open={openAlert}
+        handleClose={handleCloseAlert}
+        handleContinue={handleLogout}
+        severity="warning"
+        title="You are about to logout"
+        message="Are you sure you want to continue? Please confirm if you want to proceed or cancel to stay logged in."
+      />
       <IconButton
-        onClick={handleOpen}
+        onClick={handleOpenAccountMenu}
         sx={{
           width: 40,
           height: 40,
@@ -109,7 +134,7 @@ export default function AccountPopover() {
         <MenuItem
           disableRipple
           disableTouchRipple
-          onClick={handleClose}
+          onClick={handleOpenAlert}
           sx={{ typography: "body2", color: "error.main", py: 1.5 }}
         >
           Logout

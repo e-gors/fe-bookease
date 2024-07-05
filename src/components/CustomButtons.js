@@ -20,7 +20,7 @@ const OutlinedButton = styled(Button)(({ theme }) => ({
     backgroundColor: "#5ABED5",
     borderColor: "white",
     color: "white",
-    boxShadow: 5
+    boxShadow: 5,
   },
 }));
 
@@ -29,4 +29,24 @@ const TextButton = styled(Button)(({ theme }) => ({
   color: "black",
 }));
 
-export { ContainedButton, OutlinedButton, TextButton };
+const DangerButton = styled(Button)(({ them }) => ({
+  backgroundColor: "#FF5C5C",
+  color: "white",
+  textTransform: "none",
+  "&:hover": {
+    backgroundColor: "#FF5C5C",
+  },
+}));
+
+const WarningButton = styled(Button)(({ them }) => ({
+  backgroundColor: "#FFC107",
+  textTransform: "none",
+}));
+
+export {
+  ContainedButton,
+  OutlinedButton,
+  TextButton,
+  DangerButton,
+  WarningButton,
+};

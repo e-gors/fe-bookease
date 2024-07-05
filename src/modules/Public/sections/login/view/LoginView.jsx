@@ -78,6 +78,12 @@ export default function LoginView() {
     });
   };
 
+  const handleKeyPress = (e) => {
+    if (e.key === "Enter") {
+      handleValidate();
+    }
+  };
+
   const handleValidate = () => {
     validator.validateAll(formValues.values).then((success) => {
       if (success) {
@@ -121,6 +127,7 @@ export default function LoginView() {
           errors={formValues.errors}
           type="email"
           required
+          onKeyPress={handleKeyPress}
         />
 
         <FormField
@@ -131,6 +138,7 @@ export default function LoginView() {
           errors={formValues.errors}
           type={showPassword ? "text" : "password"}
           required
+          onKeyPress={handleKeyPress}
           InputProps={{
             endAdornment: (
               <InputAdornment position="end">

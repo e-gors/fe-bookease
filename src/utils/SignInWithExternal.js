@@ -6,7 +6,9 @@ import {
   options,
 } from "../components/ToastNotificationComponents";
 
-export const SignInWithExternal = (auth, provider, AuthProvider) => {
+const SignInWithExternal = (auth, provider, AuthProvider) => {
+  const router = useRouter();
+
   signInWithPopup(auth, provider)
     .then((result) => {
       // This gives you a Google Access Token. You can use it to access the Google API.
@@ -16,20 +18,25 @@ export const SignInWithExternal = (auth, provider, AuthProvider) => {
       const user = result.user;
       // IdP data available using getAdditionalUserInfo(result)
       // ...
-      HandleCache({ name: "accessToken", data: token }, "set");
-      HandleCache({ name: "user", data: user }, "set");
-      useRouter.push("/dashboard");
+      // adds data to local storage
+      HandleCache([
+        { name: "accessToken", data: token, method: "set" },
+        { name: "user", data: user, method: "set" },
+      ]);
+      router.push("/dashboard");
     })
     .catch((error) => {
       // Handle Errors here.
-    //   const errorCode = error.code;
+      //   const errorCode = error.code;
       const errorMessage = error.message;
       // The email of the user's account used.
-    //   const email = error.customData.email;
+      //   const email = error.customData.email;
       // The AuthCredential type that was used.
-    //   const credential = AuthProvider.credentialFromError(error);
+      //   const credential = AuthProvider.credentialFromError(error);
       // ...
 
       ToastNotification("error", errorMessage, options);
     });
 };
+
+export { SignInWithExternal };
