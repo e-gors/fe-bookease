@@ -30,7 +30,7 @@ export const Validator = (fields) => {
     return field
       .replace(/_/g, " ")
       .replace(/\b\w/g, (char) => char.toUpperCase());
-  };
+  };  
 
   const dictionary = {
     en: {
@@ -40,8 +40,14 @@ export const Validator = (fields) => {
           `${formatFieldName(field)} must be a valid email address!`,
         number: (field) => `${formatFieldName(field)} must be a number!`,
         regex: (field) => `${formatFieldName(field)} format is invalid!`,
-        min: (field) => `${formatFieldName(field)} must be at least 6 chars length!`,
-        max: (field) => `${formatFieldName(field)} must only be 20 chars length!`,
+        min: (field) =>
+          `${formatFieldName(field)} must be at least 6 chars length!`,
+        max: (field) =>
+          `${formatFieldName(field)} must only be 20 chars length!`,
+        // is: (field, [confirmedField]) =>
+        //   `${formatFieldName(field)} must match ${formatFieldName(
+        //     confirmedField
+        //   )}!`,
       },
     },
   };
@@ -66,6 +72,10 @@ export const isEmpty = (value) => {
     return Object.keys(value).length === 0;
   }
   return !value;
+};
+
+export const isMatchPassword = (password, re_password) => {
+  return password === re_password;
 };
 
 export const HandleCache = (data, method) => {

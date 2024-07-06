@@ -15,16 +15,16 @@ function CreateAccount({
         fontWeight="bold"
         sx={{ mb: 2 }}
       >
-        Provide Information that are Required
+        Provide Information that are Required (*)
       </Typography>
       <Box component="form" sx={{ mt: 1 }}>
         <FormField
           onKeyPress={handleKeyPress}
           required
           name="email"
-          errors={account.errors}
+          errors={account?.errors}
           onChange={(e) => handleChange("account", e)}
-          value={account.values?.email}
+          value={account?.values?.email}
           size="small"
           margin="normal"
           fullWidth
@@ -35,13 +35,26 @@ function CreateAccount({
           onKeyPress={handleKeyPress}
           required
           name="password"
-          errors={account.errors}
+          errors={account?.errors}
           onChange={(e) => handleChange("account", e)}
-          value={account.values?.password}
+          value={account?.values?.password}
           size="small"
           margin="normal"
           fullWidth
           label="Password"
+          type="password"
+        />
+        <FormField
+          onKeyPress={handleKeyPress}
+          required
+          name="re_password"
+          errors={account?.errors}
+          onChange={(e) => handleChange("account", e)}
+          value={account?.values?.re_password}
+          size="small"
+          margin="normal"
+          fullWidth
+          label="Retype Password"
           type="password"
         />
       </Box>

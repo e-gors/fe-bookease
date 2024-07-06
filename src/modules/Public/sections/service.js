@@ -7,3 +7,11 @@ export const login = (params) => {
     },
   });
 };
+
+export const register = (params) => {
+  return axios.post(`${process.env.REACT_APP_API_DOMAIN}/register`, params, {
+    headers: {
+      Accept: "application/json",
+    },
+  });
+};

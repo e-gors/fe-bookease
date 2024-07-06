@@ -1,14 +1,17 @@
 import React, { useState } from "react";
-import Box from "@mui/material/Box";
-import Link from "@mui/material/Link";
-import Card from "@mui/material/Card";
-import Stack from "@mui/material/Stack";
-import Button from "@mui/material/Button";
-import Divider from "@mui/material/Divider";
-import Typography from "@mui/material/Typography";
-import IconButton from "@mui/material/IconButton";
+import {
+  Box,
+  Button,
+  Card,
+  CircularProgress,
+  Divider,
+  IconButton,
+  InputAdornment,
+  Link,
+  Stack,
+  Typography,
+} from "@mui/material";
 import { alpha, useTheme } from "@mui/material/styles";
-import InputAdornment from "@mui/material/InputAdornment";
 
 import { useRouter } from "../../../../../routes/hooks";
 
@@ -28,14 +31,14 @@ import {
   GoogleAuthProvider,
   FacebookAuthProvider,
   TwitterAuthProvider,
+  getAdditionalUserInfo,
 } from "firebase/auth";
 import {
   options,
   ToastNotification,
   ToastNotificationContainer,
 } from "../../../../../components/ToastNotificationComponents";
-import { login } from "../service";
-import { CircularProgress } from "@mui/material";
+import { login, register } from "../../service";
 import { signInWithPopup } from "firebase/auth";
 // ----------------------------------------------------------------------
 
@@ -60,23 +63,29 @@ export default function LoginView() {
   const [loading, setLoading] = useState(false);
   // const [user] = useAuthState(auth);
 
+
+  //user uses the external login functionalities to login
   const SignInWithExternal = (auth, provider, AuthProvider) => {
+    setLoading(true);
     signInWithPopup(auth, provider)
       .then((result) => {
         // This gives you a Google Access Token. You can use it to access the Google API.
         const credential = AuthProvider.credentialFromResult(result);
         const token = credential.accessToken;
         // The signed-in user info.
-        const user = result.user;
+        // const user = result.user;
+        const addInfo = getAdditionalUserInfo(result);
         // IdP data available using getAdditionalUserInfo(result)
         // ...
         // adds data to local storage
-        console.log(user);
-        HandleCache([
-          { name: "accessToken", data: token, method: "set" },
-          { name: "user", data: user, method: "set" },
-        ]);
-        router.push("/dashboard");
+        const isNewUser = addInfo.isNewUser;
+        const profile = addInfo.profile;
+
+        if (isNewUser) {
+          Register(profile);
+        } else {
+          handleSubmit(profile);
+        }
       })
       .catch((error) => {
         // Handle Errors here.
@@ -90,6 +99,7 @@ export default function LoginView() {
         if (errorCode !== "auth/popup-closed-by-user") {
           ToastNotification("error", errorMessage, options);
         }
+        setLoading(false);
       });
   };
 
@@ -119,7 +129,7 @@ export default function LoginView() {
   const handleValidate = () => {
     validator.validateAll(formValues.values).then((success) => {
       if (success) {
-        handleSubmit();
+        handleSubmit(formValues.values);
       } else {
         setFormValues((prev) => ({
           ...prev,
@@ -129,11 +139,35 @@ export default function LoginView() {
     });
   };
 
-  const handleSubmit = () => {
-    setLoading(true);
-    login(formValues.values)
+  
+  //if user login using external means but not yet registered in the system
+  const Register = (data) => {
+    register(data)
       .then((res) => {
-        if (res.data.status === "success") {
+        if (res.data.status === 201) {
+          ToastNotification("success", "Registration Successfully", options);
+          HandleCache([
+            { name: "accessToken", data: res.data.token, method: "set" },
+            { name: "user", data: res.data.user, method: "set" },
+          ]);
+          router.push("/dashboard");
+        } else {
+          ToastNotification("error", res.data.message, options);
+        }
+        setLoading(false);
+      })
+      .catch((err) => {
+        ToastNotification("error", err.message, options);
+        setLoading(false);
+      });
+  };
+
+  //if user user external means to login or by manual login
+  const handleSubmit = (data) => {
+    setLoading(true);
+    login(data)
+      .then((res) => {
+        if (res.data.status === 200) {
           HandleCache({ name: "accessToken", data: res.data.token }, "set");
           HandleCache({ name: "user", data: res.data.user }, "set");
           router.push("/dashboard");
@@ -250,7 +284,11 @@ export default function LoginView() {
 
             <Typography variant="body2" sx={{ mt: 2, mb: 5 }}>
               Don’t have an account?
-              <Link variant="subtitle2" sx={{ ml: 0.5 }}>
+              <Link
+                variant="subtitle2"
+                sx={{ ml: 0.5, cursor: "pointer" }}
+                href="/register"
+              >
                 Get started
               </Link>
             </Typography>
