@@ -24,7 +24,6 @@ import {
   facebookProvider,
   twitterProvider,
 } from "../../../../../utils/firebase";
-import { useAuthState } from "react-firebase-hooks/auth";
 import {
   GoogleAuthProvider,
   FacebookAuthProvider,
@@ -35,9 +34,9 @@ import {
   ToastNotification,
   ToastNotificationContainer,
 } from "../../../../../components/ToastNotificationComponents";
-import { SignInWithExternal } from "../../../../../utils/SignInWithExternal";
 import { login } from "../service";
 import { CircularProgress } from "@mui/material";
+import { signInWithPopup } from "firebase/auth";
 // ----------------------------------------------------------------------
 
 const validator = Validator({
@@ -60,6 +59,39 @@ export default function LoginView() {
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   // const [user] = useAuthState(auth);
+
+  const SignInWithExternal = (auth, provider, AuthProvider) => {
+    signInWithPopup(auth, provider)
+      .then((result) => {
+        // This gives you a Google Access Token. You can use it to access the Google API.
+        const credential = AuthProvider.credentialFromResult(result);
+        const token = credential.accessToken;
+        // The signed-in user info.
+        const user = result.user;
+        // IdP data available using getAdditionalUserInfo(result)
+        // ...
+        // adds data to local storage
+        console.log(user);
+        HandleCache([
+          { name: "accessToken", data: token, method: "set" },
+          { name: "user", data: user, method: "set" },
+        ]);
+        router.push("/dashboard");
+      })
+      .catch((error) => {
+        // Handle Errors here.
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        // The email of the user's account used.
+        //   const email = error.customData.email;
+        // The AuthCredential type that was used.
+        //   const credential = AuthProvider.credentialFromError(error);
+        // ...
+        if (errorCode !== "auth/popup-closed-by-user") {
+          ToastNotification("error", errorMessage, options);
+        }
+      });
+  };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
