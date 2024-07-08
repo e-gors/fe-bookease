@@ -3,6 +3,8 @@ import Http from "../../../../../utils/Http";
 import UserTable from "../components/user-table";
 // ----------------------------------------------------------------------
 
+
+//custom columns for each of the table (user table)
 const columns = [
   { id: "name", label: "Name" },
   { id: "email", label: "Email" },
@@ -10,6 +12,46 @@ const columns = [
   { id: "isVerified", label: "Verified", align: "center" },
   { id: "status", label: "Status" },
   { id: "" },
+];
+
+//custom filters for each of the table (user table)
+const filterItems = [
+  {
+    type: "dropdown",
+    name: "role",
+    label: "Role",
+    options: ["Customer", "Service Provider"],
+  },
+  {
+    type: "dropdown",
+    name: "isVerified",
+    label: "Verified",
+    options: [
+      {
+        name: "Yes",
+        value: true,
+      },
+      {
+        name: "No",
+        value: false,
+      },
+    ],
+  },
+  {
+    type: "dropdown",
+    name: "status",
+    label: "Status",
+    options: [
+      {
+        name: "Active",
+        value: "active",
+      },
+      {
+        name: "Banned",
+        value: "banned",
+      },
+    ],
+  },
 ];
 
 export default function UserPage() {
@@ -75,6 +117,8 @@ export default function UserPage() {
         onChangePage={handleChangePage}
         onRowsChangePage={handleRowChange}
         columns={columns}
+        placeholder="Search Users..."
+        filterItems={filterItems}
       />
     </>
   );

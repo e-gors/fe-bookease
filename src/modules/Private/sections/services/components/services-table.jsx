@@ -25,7 +25,6 @@ import {
   getComparator,
 } from "../../../common-components/utils";
 import ServicesTableRow from "./services-table-row";
-import { getProfile } from "../../../../../utils/helpers";
 
 // ----------------------------------------------------------------------
 
@@ -39,6 +38,7 @@ export default function ServicesTable(props) {
     withPagination = false,
     withNumber,
     loading,
+    placeholder,
     ...rest
   } = props;
 
@@ -137,6 +137,7 @@ export default function ServicesTable(props) {
           numSelected={selected.length}
           filterName={filterName}
           onFilterName={handleFilterByName}
+          placeholder={placeholder}
         />
 
         <Scrollbar>
@@ -154,7 +155,7 @@ export default function ServicesTable(props) {
               <TableBody>
                 {dataFiltered.map((row, i) => (
                   <ServicesTableRow
-                    key={row.id}
+                    key={i}
                     name={row.name}
                     description={row.description}
                     selected={selected.indexOf(row.name) !== -1}

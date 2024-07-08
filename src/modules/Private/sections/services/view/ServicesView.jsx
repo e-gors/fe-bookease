@@ -60,8 +60,6 @@ export default function ServicesView() {
     handleFilterChange("limit", value);
   };
 
-  console.log(servicesList.data);
-
   return (
     <>
       <UserTable
@@ -74,6 +72,7 @@ export default function ServicesView() {
         onChangePage={handleChangePage}
         onRowsChangePage={handleRowChange}
         columns={columns}
+        placeholder="Search Services..."
       />
     </>
   );

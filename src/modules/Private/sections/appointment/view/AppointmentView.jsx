@@ -74,6 +74,7 @@ export default function AppointmentView() {
         onChangePage={handleChangePage}
         onRowsChangePage={handleRowChange}
         columns={columns}
+        placeholder="Search Appointments..."
       />
     </>
   );

@@ -39,6 +39,8 @@ export default function UserTable(props) {
     withPagination = false,
     withNumber,
     loading,
+    placeholder,
+    filterItems,
     ...rest
   } = props;
 
@@ -47,6 +49,11 @@ export default function UserTable(props) {
   const [selected, setSelected] = useState([]);
   const [orderBy, setOrderBy] = useState("name");
   const [filterName, setFilterName] = useState("");
+  const [filterValues, setFilterValues] = useState({
+    role: "",
+    isVerified: "",
+    status: "",
+  });
 
   const handleSort = (event, id) => {
     const isAsc = orderBy === id && order === "asc";
@@ -100,7 +107,22 @@ export default function UserTable(props) {
     inputData: data,
     comparator: getComparator(order, orderBy),
     filterName,
+    filterValues,
   });
+
+  const handleMultipleFilters = (filterValues) => {
+    setPage(0);
+    const { name, value } = filterValues.target;
+    setFilterValues((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
+
+  const handleClearFilters = () => {
+    setPage(0);
+    setFilterValues({});
+  };
 
   const notFound = !dataFiltered.length && !!filterName;
 
@@ -136,7 +158,12 @@ export default function UserTable(props) {
         <CommonToolbar
           numSelected={selected.length}
           filterName={filterName}
+          filterValues={filterValues}
           onFilterName={handleFilterByName}
+          placeholder={placeholder}
+          filterItems={filterItems}
+          onMultipleFilters={handleMultipleFilters}
+          onClearFilters={handleClearFilters}
         />
 
         <Scrollbar>
@@ -154,7 +181,7 @@ export default function UserTable(props) {
               <TableBody>
                 {dataFiltered.map((row, i) => (
                   <UserTableRow
-                    key={row.id}
+                    key={i}
                     name={row.name}
                     email={row.email}
                     role={row.role}

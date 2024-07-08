@@ -10,7 +10,6 @@ function SelectDropdown(props) {
     ...rest
   } = props;
 
-
   let error = false;
   let helperText = "";
 
@@ -28,7 +27,6 @@ function SelectDropdown(props) {
   const newProps = {
     variant: "outlined",
     select: true,
-    margin: "dense",
     fullWidth: true,
     error,
     helperText,
@@ -43,8 +41,8 @@ function SelectDropdown(props) {
     >
       {!noOptions && <option value="">Select Option</option>}
       {options.map((option, i) => (
-        <option key={i} value={option}>
-          {option}
+        <option key={i} value={option.value ? option.value : option}>
+          {option.name ? option.name : option}
         </option>
       ))}
     </TextField>

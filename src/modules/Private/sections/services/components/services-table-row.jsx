@@ -35,7 +35,7 @@ export default function UserTableRow({
           <Checkbox disableRipple checked={selected} onChange={handleClick} />
         </TableCell>
         <TableCell>{name}</TableCell>
-        <TableCell>{description}</TableCell>
+        <TableCell sx={{ minWidth: 350 }}>{description}</TableCell>
         <TableCell align="right">
           <IconButton onClick={handleOpenMenu}>
             <Iconify icon="eva:more-vertical-fill" />

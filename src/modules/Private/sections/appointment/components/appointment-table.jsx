@@ -19,7 +19,11 @@ import TableNoData from "../../../common-components/table-no-data";
 import CommonTableHead from "../../../common-components/table-head";
 import TableEmptyRows from "../../../common-components/table-empty-rows";
 import CommonToolbar from "../../../common-components/table-toolbar";
-import { emptyRows, applyFilter, getComparator } from "../../../common-components/utils";
+import {
+  emptyRows,
+  applyFilter,
+  getComparator,
+} from "../../../common-components/utils";
 import AppointmentTableRow from "./appointment-table-row";
 
 // ----------------------------------------------------------------------
@@ -34,6 +38,7 @@ export default function AppointmentTable(props) {
     withPagination = false,
     withNumber,
     loading,
+    placeholder,
     ...rest
   } = props;
 
@@ -132,6 +137,7 @@ export default function AppointmentTable(props) {
           numSelected={selected.length}
           filterName={filterName}
           onFilterName={handleFilterByName}
+          placeholder={placeholder}
         />
 
         <Scrollbar>
@@ -147,9 +153,9 @@ export default function AppointmentTable(props) {
                 headLabel={columns}
               />
               <TableBody>
-                {dataFiltered.map((row) => (
+                {dataFiltered.map((row, i) => (
                   <AppointmentTableRow
-                    key={row.id}
+                    key={i}
                     name={row.name}
                     role={row.role}
                     status={row.status}
