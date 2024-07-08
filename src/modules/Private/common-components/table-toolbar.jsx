@@ -7,11 +7,11 @@ import IconButton from '@mui/material/IconButton';
 import OutlinedInput from '@mui/material/OutlinedInput';
 import InputAdornment from '@mui/material/InputAdornment';
 
-import Iconify from '../../../../../components/iconify';
+import Iconify from '../../../components/iconify';
 
 // ----------------------------------------------------------------------
 
-export default function UserTableToolbar({ numSelected, filterName, onFilterName }) {
+export default function CommonTableToolbar({ numSelected, filterName, onFilterName }) {
   return (
     <Toolbar
       sx={{
@@ -62,7 +62,7 @@ export default function UserTableToolbar({ numSelected, filterName, onFilterName
   );
 }
 
-UserTableToolbar.propTypes = {
+CommonTableToolbar.propTypes = {
   numSelected: PropTypes.number,
   filterName: PropTypes.string,
   onFilterName: PropTypes.func,

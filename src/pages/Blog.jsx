@@ -8,7 +8,7 @@ export default function BlogPage() {
   return (
     <>
       <Helmet>
-        <title> Blog | BookEase </title>
+        <title> Blogs | BookEase </title>
       </Helmet>
 
       <BlogView />

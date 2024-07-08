@@ -30,7 +30,7 @@ export const Validator = (fields) => {
     return field
       .replace(/_/g, " ")
       .replace(/\b\w/g, (char) => char.toUpperCase());
-  };  
+  };
 
   const dictionary = {
     en: {
@@ -98,4 +98,18 @@ export const HandleCache = (data, method) => {
       localStorage.removeItem(data.name);
     }
   }
+};
+
+export const getProfile = (imageUrl, gender, index) => {
+  let url;
+  if (imageUrl) {
+    url = imageUrl;
+  } else {
+    if (gender === "male") {
+      url = `/assets/images/avatars/m_avatar_${index}.jpg`;
+    } else {
+      url = `/assets/images/avatars/f_avatar_${index}.jpg`;
+    }
+  }
+  return url;
 };

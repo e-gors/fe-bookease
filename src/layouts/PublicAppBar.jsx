@@ -24,6 +24,11 @@ import HomeRepairServiceIcon from "@mui/icons-material/HomeRepairService";
 import InfoIcon from "@mui/icons-material/Info";
 import BookIcon from "@mui/icons-material/Book";
 import ContactPageIcon from "@mui/icons-material/ContactPage";
+import LanguagePopover from "./dashboard/common/language-popover";
+import NotificationsPopover from "./dashboard/common/notifications-popover";
+import AccountPopover from "./dashboard/common/account-popover";
+import { isAuth } from "../utils/helpers";
+import Logo from "../components/logo";
 
 const pages = [
   {
@@ -159,24 +164,7 @@ function PublicAppBar() {
           }}
         >
           <Box sx={{ display: "flex", alignItems: "center" }}>
-            <AdbIcon sx={{ display: { xs: "none", md: "flex" }, mr: 1 }} />
-            <Typography
-              variant="h6"
-              noWrap
-              component="a"
-              href="/"
-              sx={{
-                mr: 2,
-                display: { xs: "none", md: "flex" },
-                fontFamily: "Outfit",
-                fontWeight: 700,
-                letterSpacing: ".1rem",
-                color: "inherit",
-                textDecoration: "none",
-              }}
-            >
-              Efren
-            </Typography>
+            <Logo sx={{ mr: 1, display: { xs: "none", md: "block" } }} />
           </Box>
 
           <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
@@ -200,25 +188,7 @@ function PublicAppBar() {
               }}
             >
               <Box sx={{ display: "flex", alignItems: "center", m: 2 }}>
-                <AdbIcon sx={{ mr: 1 }} />
-                <Typography
-                  variant="h6"
-                  noWrap
-                  component="a"
-                  href="/"
-                  sx={{
-                    mr: 2,
-                    display: "flex",
-                    fontFamily: "Outfit",
-                    fontWeight: 700,
-                    letterSpacing: ".1rem",
-                    color: "inherit",
-                    textDecoration: "none",
-                    fontSize: 16,
-                  }}
-                >
-                  Efren
-                </Typography>
+                <Logo sx={{ mr: 1 }} />
               </Box>
               <List>
                 {currentPath !== "login" &&
@@ -297,17 +267,29 @@ function PublicAppBar() {
               ))}
           </Box>
 
-          <Stack direction="row" spacing={1}>
-            <TextButton variant="text" onClick={() => handleNavigate("/login")}>
-              Login
-            </TextButton>
-            <OutlinedButton
-              variant="outlined"
-              onClick={() => handleNavigate("/register")}
-            >
-              Sign Up Now
-            </OutlinedButton>
-          </Stack>
+          {!isAuth() && (
+            <Stack direction="row" spacing={1}>
+              <TextButton
+                variant="text"
+                onClick={() => handleNavigate("/login")}
+              >
+                Login
+              </TextButton>
+              <OutlinedButton
+                variant="outlined"
+                onClick={() => handleNavigate("/register")}
+              >
+                Sign Up Now
+              </OutlinedButton>
+            </Stack>
+          )}
+          {isAuth() && (
+            <Stack direction="row" alignItems="center" spacing={1}>
+              <LanguagePopover />
+              <NotificationsPopover />
+              <AccountPopover />
+            </Stack>
+          )}
         </Toolbar>
       </Container>
     </AppBar>

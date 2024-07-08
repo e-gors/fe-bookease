@@ -21,11 +21,15 @@ import Scrollbar from "../../components/scrollbar";
 
 import { NAV } from "./config-layout";
 import navConfig from "./config-navigation";
+import { HandleCache } from "../../utils/helpers";
 
 // ----------------------------------------------------------------------
 
 export default function Nav({ openNav, onCloseNav }) {
   const pathname = usePathname();
+
+  const userAccount = HandleCache({ name: "user" }, "get");
+  const { profile_picture, fullname, role } = userAccount;
 
   const upLg = useResponsive("up", "lg");
 
@@ -49,13 +53,13 @@ export default function Nav({ openNav, onCloseNav }) {
         bgcolor: (theme) => alpha(theme.palette.grey[500], 0.12),
       }}
     >
-      <Avatar src={account.photoURL} alt="photoURL" />
+      <Avatar src={profile_picture ? profile_picture : account.photoURL} alt="photoURL" />
 
       <Box sx={{ ml: 2 }}>
-        <Typography variant="subtitle2">{account.displayName}</Typography>
+        <Typography variant="subtitle2">{fullname ? fullname : account.displayName}</Typography>
 
         <Typography variant="body2" sx={{ color: "text.secondary" }}>
-          {account.role}
+          {role ? role : account.role}
         </Typography>
       </Box>
     </Box>
@@ -63,8 +67,8 @@ export default function Nav({ openNav, onCloseNav }) {
 
   const renderMenu = (
     <Stack component="nav" spacing={0.5} sx={{ px: 2 }}>
-      {navConfig.map((item) => (
-        <NavItem key={item.title} item={item} />
+      {navConfig.map((item, i) => (
+        <NavItem key={i} item={item} />
       ))}
     </Stack>
   );

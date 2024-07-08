@@ -10,7 +10,7 @@ function PublicDefaultLayout({ children }) {
       <Box
         sx={{
           height: "auto",
-          minHeight: "100vh",
+          minHeight: "90vh",
           width: "90%",
           mx: "auto",
           my: 10,

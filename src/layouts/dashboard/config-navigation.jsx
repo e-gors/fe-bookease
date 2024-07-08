@@ -1,41 +1,46 @@
-import SvgColor from '../../components/svg-color';
+import SvgColor from "../../components/svg-color";
+import { HandleCache } from "../../utils/helpers";
 
 // ----------------------------------------------------------------------
 
 const icon = (name) => (
-  <SvgColor src={`/assets/icons/navbar/${name}.svg`} sx={{ width: 1, height: 1 }} />
+  <SvgColor
+    src={`/assets/icons/navbar/${name}.svg`}
+    sx={{ width: 1, height: 1 }}
+  />
 );
+const user = HandleCache({ name: "user" }, "get");
 
 const navConfig = [
   {
-    title: 'dashboard',
-    path: '/dashboard',
-    icon: icon('ic_analytics'),
+    title: "dashboard",
+    path: "/dashboard",
+    icon: icon("ic_dashboard"),
   },
   {
-    title: 'users',
-    path: '/users',
-    icon: icon('ic_user'),
+    title: "services",
+    path: "/services",
+    icon: icon("ic_services"),
   },
   {
-    title: 'products',
-    path: '/products',
-    icon: icon('ic_cart'),
+    title: "appointments",
+    path: "/appointments",
+    icon: icon("ic_calendar"),
   },
   {
-    title: 'blogs',
-    path: '/blogs',
-    icon: icon('ic_blog'),
+    title: "users",
+    path: "/users",
+    icon: icon("ic_outlined_users_group"),
   },
   {
-    title: 'login',
-    path: '/login',
-    icon: icon('ic_lock'),
+    title: "products",
+    path: "/products",
+    icon: icon("ic_cart"),
   },
   {
-    title: 'Not found',
-    path: '/404',
-    icon: icon('ic_disabled'),
+    title: "blogs",
+    path: "/blogs",
+    icon: icon("ic_blog"),
   },
 ];
 

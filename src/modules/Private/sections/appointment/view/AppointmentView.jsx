@@ -1,20 +1,17 @@
 import React from "react";
 import Http from "../../../../../utils/Http";
-import UserTable from "../components/user-table";
+import AppointmentTable from "../components/appointment-table";
 // ----------------------------------------------------------------------
 
 const columns = [
   { id: "name", label: "Name" },
-  { id: "email", label: "Email" },
-  { id: "role", label: "Role" },
-  { id: "isVerified", label: "Verified", align: "center" },
-  { id: "status", label: "Status" },
+  { id: "description", label: "Description" },
   { id: "" },
 ];
 
-export default function UserPage() {
+export default function AppointmentView() {
   const [loading, setLoading] = React.useState(false);
-  const [userList, setUserList] = React.useState({
+  const [appointmentList, setAppointmentList] = React.useState({
     data: [],
     meta: {},
   });
@@ -38,14 +35,14 @@ export default function UserPage() {
 
   const fetchingData = (params = {}) => {
     setLoading(true);
-    Http.get("/users", {
+    Http.get("/appointments", {
       params: {
         ...filters,
         ...params,
       },
     }).then((res) => {
       if (res.data.data) {
-        setUserList({
+        setAppointmentList({
           data: res.data.data,
           meta: res.data.meta,
         });
@@ -63,15 +60,17 @@ export default function UserPage() {
     handleFilterChange("limit", value);
   };
 
+  console.log(appointmentList.data);
+
   return (
     <>
-      <UserTable
+      <AppointmentTable
         withPagination
         loading={loading}
-        data={userList.data}
+        data={appointmentList.data}
         rowsPerPage={filters.limit}
-        count={userList.meta.total || 0}
-        page={userList.meta.current_page - 1 || 0}
+        count={appointmentList.meta.total || 0}
+        page={appointmentList.meta.current_page - 1 || 0}
         onChangePage={handleChangePage}
         onRowsChangePage={handleRowChange}
         columns={columns}

@@ -8,7 +8,7 @@ export default function UserPage() {
   return (
     <>
       <Helmet>
-        <title> User | BookEase </title>
+        <title> Users | BookEase </title>
       </Helmet>
 
       <UserView />

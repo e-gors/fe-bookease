@@ -13,27 +13,42 @@ import { account } from "../../../_mock/account";
 import { useRouter } from "../../../routes/hooks";
 import { HandleCache } from "../../../utils/helpers";
 import CustomAlert from "../../../components/CustomAlert";
+import { useLocation } from "react-router-dom";
 
 // ----------------------------------------------------------------------
 
 const MENU_OPTIONS = [
   {
-    label: "Home",
+    label: "Homepage",
     icon: "eva:home-fill",
+    link: "/",
+  },
+  {
+    label: "Dashboard",
+    icon: "eva:dashboard-outline",
+    link: "/dashboard",
   },
   {
     label: "Profile",
     icon: "eva:person-fill",
+    link: "/profile",
   },
   {
     label: "Settings",
     icon: "eva:settings-2-fill",
+    link: "/settings",
   },
 ];
 
 // ----------------------------------------------------------------------
 export default function AccountPopover() {
   const router = useRouter();
+  const location = useLocation();
+
+  const userAccount = HandleCache({ name: "user" }, "get");
+  const { profile_picture, first_name, last_name, email } = userAccount;
+  const fullname = first_name + " " + last_name;
+
   const [open, setOpen] = useState(null);
   const [openAlert, setOpenAlert] = useState(false);
 
@@ -52,6 +67,14 @@ export default function AccountPopover() {
 
   const handleClose = () => {
     setOpen(null);
+  };
+
+  const handleNavigate = (link) => {
+    if(location.pathname === link){
+      handleClose()
+    }else{
+    router.push(link);
+    }
   };
 
   const handleLogout = () => {
@@ -85,15 +108,15 @@ export default function AccountPopover() {
         }}
       >
         <Avatar
-          src={account.photoURL}
-          alt={account.displayName}
+          src={profile_picture ? profile_picture : account.photoURL}
+          alt={fullname ? fullname : account.displayName}
           sx={{
             width: 36,
             height: 36,
             border: (theme) => `solid 2px ${theme.palette.background.default}`,
           }}
         >
-          {account.displayName.charAt(0).toUpperCase()}
+          {fullname ? fullname : account.displayName.charAt(0).toUpperCase()}
         </Avatar>
       </IconButton>
 
@@ -114,17 +137,17 @@ export default function AccountPopover() {
       >
         <Box sx={{ my: 1.5, px: 2 }}>
           <Typography variant="subtitle2" noWrap>
-            {account.displayName}
+            {fullname ? fullname : account.displayName}
           </Typography>
           <Typography variant="body2" sx={{ color: "text.secondary" }} noWrap>
-            {account.email}
+            {email ? email : account.email}
           </Typography>
         </Box>
 
         <Divider sx={{ borderStyle: "dashed" }} />
 
         {MENU_OPTIONS.map((option) => (
-          <MenuItem key={option.label} onClick={handleClose}>
+          <MenuItem key={option.label} onClick={() => handleNavigate(option.link)}>
             {option.label}
           </MenuItem>
         ))}

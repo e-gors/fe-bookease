@@ -1,20 +1,17 @@
 import React from "react";
 import Http from "../../../../../utils/Http";
-import UserTable from "../components/user-table";
+import UserTable from "../components/services-table";
 // ----------------------------------------------------------------------
 
 const columns = [
   { id: "name", label: "Name" },
-  { id: "email", label: "Email" },
-  { id: "role", label: "Role" },
-  { id: "isVerified", label: "Verified", align: "center" },
-  { id: "status", label: "Status" },
+  { id: "description", label: "Description" },
   { id: "" },
 ];
 
-export default function UserPage() {
+export default function ServicesView() {
   const [loading, setLoading] = React.useState(false);
-  const [userList, setUserList] = React.useState({
+  const [servicesList, setServicesList] = React.useState({
     data: [],
     meta: {},
   });
@@ -38,14 +35,14 @@ export default function UserPage() {
 
   const fetchingData = (params = {}) => {
     setLoading(true);
-    Http.get("/users", {
+    Http.get("/services", {
       params: {
         ...filters,
         ...params,
       },
     }).then((res) => {
       if (res.data.data) {
-        setUserList({
+        setServicesList({
           data: res.data.data,
           meta: res.data.meta,
         });
@@ -63,15 +60,17 @@ export default function UserPage() {
     handleFilterChange("limit", value);
   };
 
+  console.log(servicesList.data);
+
   return (
     <>
       <UserTable
         withPagination
         loading={loading}
-        data={userList.data}
+        data={servicesList.data}
         rowsPerPage={filters.limit}
-        count={userList.meta.total || 0}
-        page={userList.meta.current_page - 1 || 0}
+        count={servicesList.meta.total || 0}
+        page={servicesList.meta.current_page - 1 || 0}
         onChangePage={handleChangePage}
         onRowsChangePage={handleRowChange}
         columns={columns}

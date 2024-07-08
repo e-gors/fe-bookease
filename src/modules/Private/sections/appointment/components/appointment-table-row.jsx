@@ -16,14 +16,14 @@ import Iconify from "../../../../../components/iconify";
 
 // ----------------------------------------------------------------------
 
-export default function UserTableRow({
+export default function AppointmentTableRow({
   selected,
   name,
-  email,
-  role,
-  status,
   avatarUrl,
+  company,
+  role,
   isVerified,
+  status,
   handleClick,
 }) {
   const [open, setOpen] = useState(null);
@@ -51,14 +51,19 @@ export default function UserTableRow({
             </Typography>
           </Stack>
         </TableCell>
-        <TableCell>{email}</TableCell>
+
+        <TableCell>{company}</TableCell>
+
         <TableCell>{role}</TableCell>
+
         <TableCell align="center">{isVerified ? "Yes" : "No"}</TableCell>
+
         <TableCell>
           <Label color={(status === "banned" && "error") || "success"}>
             {status}
           </Label>
         </TableCell>
+
         <TableCell align="right">
           <IconButton onClick={handleOpenMenu}>
             <Iconify icon="eva:more-vertical-fill" />
@@ -90,7 +95,7 @@ export default function UserTableRow({
   );
 }
 
-UserTableRow.propTypes = {
+AppointmentTableRow.propTypes = {
   avatarUrl: PropTypes.any,
   company: PropTypes.any,
   handleClick: PropTypes.func,

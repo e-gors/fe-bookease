@@ -63,7 +63,6 @@ export default function LoginView() {
   const [loading, setLoading] = useState(false);
   // const [user] = useAuthState(auth);
 
-
   //user uses the external login functionalities to login
   const SignInWithExternal = (auth, provider, AuthProvider) => {
     setLoading(true);
@@ -139,7 +138,6 @@ export default function LoginView() {
     });
   };
 
-  
   //if user login using external means but not yet registered in the system
   const Register = (data) => {
     register(data)
@@ -168,8 +166,10 @@ export default function LoginView() {
     login(data)
       .then((res) => {
         if (res.data.status === 200) {
-          HandleCache({ name: "accessToken", data: res.data.token }, "set");
-          HandleCache({ name: "user", data: res.data.user }, "set");
+          HandleCache([
+            { name: "accessToken", data: res.data.token, method: "set" },
+            { name: "user", data: res.data.user, method: "set" },
+          ]);
           router.push("/dashboard");
         } else {
           ToastNotification("error", res.data.message, options);
@@ -228,7 +228,12 @@ export default function LoginView() {
         justifyContent="flex-end"
         sx={{ my: 3 }}
       >
-        <Link variant="subtitle2" underline="hover">
+        <Link
+          variant="subtitle2"
+          underline="hover"
+          sx={{ cursor: "pointer" }}
+          href="/forgot-password"
+        >
           Forgot password?
         </Link>
       </Stack>
