@@ -100,16 +100,49 @@ export const HandleCache = (data, method) => {
   }
 };
 
+//get profile of the user to be display in the table
 export const getProfile = (imageUrl, gender, index) => {
   let url;
+  
   if (imageUrl) {
     url = imageUrl;
   } else {
-    if (gender === "male") {
-      url = `/assets/images/avatars/m_avatar_${index}.jpg`;
+    // Determine the maximum index based on gender
+    const maxIndex = gender === 'male' ? 7 : 8;
+
+    // Calculate the actual index using modulus to loop within 0-8 range
+    const avatarIndex = index % (maxIndex);
+
+    // Construct the URL based on gender and avatar index
+    if (gender === 'male') {
+      url = `/assets/images/avatars/m_avatar_${avatarIndex}.jpg`;
     } else {
-      url = `/assets/images/avatars/f_avatar_${index}.jpg`;
+      url = `/assets/images/avatars/f_avatar_${avatarIndex}.jpg`;
     }
   }
+
   return url;
+};
+
+
+//convert value to money format
+export const toMoneyFormat = (value, precision = 2) => {
+	return parseFloat(value)
+		.toFixed(precision)
+		.replace(/\d(?=(\d{3})+\.)/g, "$&,");
+};
+
+
+//optimizing fetch
+
+export const debounce = (func) => {
+  let timer;
+  return function (...args) {
+    const context = this;
+    if (timer) clearTimeout(timer);
+    timer = setTimeout(() => {
+      timer = null;
+      func.apply(context, args);
+    }, 500);
+  };
 };

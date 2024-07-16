@@ -3,7 +3,6 @@ import Http from "../../../../../utils/Http";
 import UserTable from "../components/user-table";
 // ----------------------------------------------------------------------
 
-
 //custom columns for each of the table (user table)
 const columns = [
   { id: "name", label: "Name" },
@@ -21,6 +20,7 @@ const filterItems = [
     name: "role",
     label: "Role",
     options: ["Customer", "Service Provider"],
+    operators: ["eq"],
   },
   {
     type: "dropdown",
@@ -36,6 +36,7 @@ const filterItems = [
         value: false,
       },
     ],
+    operators: ["ne"],
   },
   {
     type: "dropdown",
@@ -47,42 +48,88 @@ const filterItems = [
         value: "active",
       },
       {
+        name: "Inactive",
+        value: "inactive",
+      },
+      {
         name: "Banned",
         value: "banned",
       },
+      {
+        name: "Deleted",
+        value: "deleted",
+      },
     ],
+    operators: ["eq"],
   },
 ];
 
 export default function UserPage() {
   const [loading, setLoading] = React.useState(false);
+  const [page, setPage] = React.useState(0);
   const [userList, setUserList] = React.useState({
     data: [],
     meta: {},
   });
   const [filters, setFilters] = React.useState({
     limit: 10,
+    search: "",
+    role: "",
+    isVerified: "",
+    status: "",
   });
 
   React.useEffect(() => {
     const controller = new AbortController();
 
-    fetchingData();
-    return () => controller.abort();
-  }, []); // eslint-disable-line
+    const time = setTimeout(() => {
+      fetchingData();
+    }, 400);
 
-  const handleFilterChange = (name, value) => {
+    return () => {
+      clearTimeout(time);
+      controller.abort();
+    };
+  }, [filters]); // eslint-disable-line
+
+  const handleFilterChange = (event) => {
+    const { name, value } = event.target;
+
     setFilters((prev) => ({
       ...prev,
       [name]: value,
     }));
   };
 
+  const buildQueryParams = (filters) => {
+    const params = {};
+    filterItems.forEach((filterItem) => {
+      const key = filterItem.name;
+      const operators = filterItem.operators;
+      if (filters[key] !== "") {
+        operators.forEach((operator) => {
+          params[`${key}[${operator}]`] = filters[key];
+        });
+      }
+    });
+
+    if (filters.search) {
+      params.search = filters.search;
+    }
+
+    params.limit = filters.limit;
+
+    return params;
+  };
+
   const fetchingData = (params = {}) => {
     setLoading(true);
+
+    const queryParams = buildQueryParams(filters);
+
     Http.get("/users", {
       params: {
-        ...filters,
+        ...queryParams,
         ...params,
       },
     }).then((res) => {
@@ -102,7 +149,16 @@ export default function UserPage() {
 
   const handleRowChange = (value) => {
     fetchingData({ limit: value });
-    handleFilterChange("limit", value);
+    handleFilterChange({ name: "limit", value: value });
+  };
+  const handleClearFilters = () => {
+    setPage(0);
+    setFilters((prev) => ({
+      ...prev,
+      role: "",
+      isVerified: "",
+      status: "",
+    }));
   };
 
   return (
@@ -119,6 +175,10 @@ export default function UserPage() {
         columns={columns}
         placeholder="Search Users..."
         filterItems={filterItems}
+        filterValues={filters}
+        onMultipleFilters={handleFilterChange}
+        onClearFilters={handleClearFilters}
+        customPage={page}
       />
     </>
   );

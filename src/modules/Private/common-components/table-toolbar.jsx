@@ -14,13 +14,11 @@ import MenuFilter from "./MenuFilter";
 
 export default function CommonTableToolbar({
   numSelected,
-  filterName,
   filterValues,
-  onFilterName,
   placeholder = "Search...",
   filterItems,
   onMultipleFilters,
-  onClearFilters
+  onClearFilters,
 }) {
   return (
     <Toolbar
@@ -41,8 +39,9 @@ export default function CommonTableToolbar({
         </Typography>
       ) : (
         <OutlinedInput
-          value={filterName}
-          onChange={onFilterName}
+          name="search"
+          value={filterValues.search}
+          onChange={onMultipleFilters}
           placeholder={placeholder}
           startAdornment={
             <InputAdornment position="start">

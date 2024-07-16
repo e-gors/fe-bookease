@@ -35,12 +35,7 @@ export function getComparator(order, orderBy) {
     : (a, b) => -descendingComparator(a, b, orderBy);
 }
 
-export function applyFilter({
-  inputData,
-  comparator,
-  filterName,
-  filterValues,
-}) {
+export function applyFilter({ inputData, comparator, filterValues }) {
   const stabilizedThis = inputData.map((el, index) => [el, index]);
 
   stabilizedThis.sort((a, b) => {
@@ -51,27 +46,38 @@ export function applyFilter({
 
   inputData = stabilizedThis.map((el) => el[0]);
 
-  //filter data using the name in column id:'name'
-  if (filterName) {
-    inputData = inputData.filter(
-      (user) => user.name.toLowerCase().indexOf(filterName.toLowerCase()) !== -1
-    );
-  }
+  // //filter data using the name in column id:'name'
+  // if (filterName) {
+  //   inputData = inputData.filter(
+  //     (user) => user.name.toLowerCase().indexOf(filterName.toLowerCase()) !== -1
+  //   );
+  // }
 
   // Apply filters to users from filterValues object
-  Object.keys(filterValues).forEach((filterKey) => {
-    if (filterValues[filterKey]) {
-      if (filterKey === "isVerified") {
-        //covert isVerified data from string to boolean
-        const verified = filterValues[filterKey] === "true";
-        inputData = inputData.filter((user) => user[filterKey] === verified);
-      } else {
-        inputData = inputData.filter(
-          (user) => user[filterKey] === filterValues[filterKey]
-        );
+  if (filterValues) {
+    Object.keys(filterValues).forEach((filterKey) => {
+      const value = filterValues[filterKey];
+
+      if (value) {
+        if (filterKey !== "limit") {
+          if (filterKey === "isVerified") {
+            // Convert isVerified data from string to boolean
+            const verified = value === "true";
+            inputData = inputData.filter(
+              (user) => user[filterKey] === verified
+            );
+          } else if (filterKey === "search") {
+            inputData = inputData.filter(
+              (user) =>
+                user.name.toLowerCase().indexOf(value.toLowerCase()) !== -1
+            );
+          } else {
+            inputData = inputData.filter((user) => user[filterKey] === value);
+          }
+        }
       }
-    }
-  });
+    });
+  }
 
   return inputData;
 }

@@ -36,6 +36,13 @@ export default function UserTableRow({
     setOpen(null);
   };
 
+  const statusColors = {
+    deleted: "error",
+    banned: "warning",
+    inactive: "secondary",
+    active: "success",
+  };
+
   return (
     <>
       <TableRow hover tabIndex={-1} role="checkbox" selected={selected}>
@@ -55,9 +62,7 @@ export default function UserTableRow({
         <TableCell>{role}</TableCell>
         <TableCell align="center">{isVerified ? "Yes" : "No"}</TableCell>
         <TableCell>
-          <Label color={(status === "banned" && "error") || "success"}>
-            {status}
-          </Label>
+          <Label color={statusColors[status]}>{status}</Label>
         </TableCell>
         <TableCell align="right">
           <IconButton onClick={handleOpenMenu}>

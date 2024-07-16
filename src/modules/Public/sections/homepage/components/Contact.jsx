@@ -11,7 +11,6 @@ import {
 } from "@mui/material";
 import FormField from "../../../../../components/FormField";
 import React from "react";
-import ReeValidate from "ree-validate-18";
 import { ContainedButton } from "../../../../../components/CustomButtons";
 import AlternateEmailIcon from "@mui/icons-material/AlternateEmail";
 import PhoneIcon from "@mui/icons-material/Phone";
@@ -20,13 +19,14 @@ import {
   ToastNotification,
   options,
 } from "../../../../../components/ToastNotificationComponents";
+import { Validator } from "../../../../../utils/helpers";
 
-const validator = new ReeValidate.Validator({
-  firstname: "required",
-  lastname: "required",
+const validator = Validator({
+  first_name: "required",
+  last_name: "required",
   email: "required|email",
   company: "",
-  phone: "required|regex:/^09[0-9]{9}$/",
+  phone: "required|regex:[/^09{9}$/]|length:11",
   message: "required",
 });
 
@@ -36,8 +36,8 @@ export default function Contact() {
   const [loading, setLoading] = React.useState(false);
   const [formValues, setFormValues] = React.useState({
     values: {
-      firstname: "",
-      lastname: "",
+      first_name: "",
+      last_name: "",
       email: "",
       company: "",
       phone: "",
@@ -68,16 +68,17 @@ export default function Contact() {
     });
   };
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
+  const handleSubmit = () => {
+    const { first_name, last_name, email, company, phone, message } =
+      formValues.values;
+
     console.log({
-      firstName: data.get("firstname"),
-      lastName: data.get("lastname"),
-      email: data.get("email"),
-      company: data.get("company"),
-      phone: data.get("phone"),
-      message: data.get("message"),
+      firstName: first_name,
+      lastName: last_name,
+      email: email,
+      company: company,
+      phone: phone,
+      message: message,
     });
   };
 
@@ -175,9 +176,9 @@ export default function Contact() {
                   <Grid item xs={6} sm={6}>
                     <FormField
                       onKeyPress={handleKeyPress}
-                      name="firstname"
+                      name="first_name"
                       label="First Name"
-                      value={formValues.values.firstname}
+                      value={formValues.values.first_name}
                       onChange={handleChange}
                       errors={formValues.errors}
                       fullWidth
@@ -186,9 +187,9 @@ export default function Contact() {
                   <Grid item xs={6} sm={6}>
                     <FormField
                       onKeyPress={handleKeyPress}
-                      name="lastname"
+                      name="last_name"
                       label="Last Name"
-                      value={formValues.values.lastname}
+                      value={formValues.values.last_name}
                       onChange={handleChange}
                       errors={formValues.errors}
                       fullWidth
