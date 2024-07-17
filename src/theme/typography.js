@@ -8,22 +8,25 @@ export function pxToRem(value) {
   return `${value / 16}rem`;
 }
 
-export function responsiveFontSizes({ sm, md, lg }) {
+export function responsiveFontSizes({ xs, sm, md, lg }) {
   return {
-    '@media (min-width:600px)': {
+    "@media (min-width:400px)": {
+      fontSize: pxToRem(xs),
+    },
+    "@media (min-width:600px)": {
       fontSize: pxToRem(sm),
     },
-    '@media (min-width:900px)': {
+    "@media (min-width:900px)": {
       fontSize: pxToRem(md),
     },
-    '@media (min-width:1200px)': {
+    "@media (min-width:1200px)": {
       fontSize: pxToRem(lg),
     },
   };
 }
 
-export const primaryFont = 'Public Sans, sans-serif';
-export const secondaryFont = 'Barlow, sans-serif';
+export const primaryFont = "Public Sans, sans-serif";
+export const secondaryFont = "Barlow, sans-serif";
 
 // ----------------------------------------------------------------------
 
@@ -38,37 +41,37 @@ export const typography = {
     fontWeight: 800,
     lineHeight: 80 / 64,
     fontSize: pxToRem(40),
-    ...responsiveFontSizes({ sm: 52, md: 58, lg: 64 }),
+    ...responsiveFontSizes({ xs: 30, sm: 40, md: 45, lg: 50 }),
   },
   h2: {
-    fontWeight: 800,
+    fontWeight: 700,
     lineHeight: 64 / 48,
     fontSize: pxToRem(32),
-    ...responsiveFontSizes({ sm: 40, md: 44, lg: 48 }),
+    ...responsiveFontSizes({ xs: 25, sm: 35, md: 40, lg: 45 }),
   },
   h3: {
     fontWeight: 700,
     lineHeight: 1.5,
     fontSize: pxToRem(24),
-    ...responsiveFontSizes({ sm: 26, md: 30, lg: 32 }),
+    ...responsiveFontSizes({ xs: 20, sm: 30, md: 35, lg: 40 }),
   },
   h4: {
-    fontWeight: 700,
+    fontWeight: 600,
     lineHeight: 1.5,
     fontSize: pxToRem(20),
-    ...responsiveFontSizes({ sm: 20, md: 24, lg: 24 }),
+    ...responsiveFontSizes({ xs: 18, sm: 25, md: 30, lg: 35 }),
   },
   h5: {
-    fontWeight: 700,
+    fontWeight: 600,
     lineHeight: 1.5,
     fontSize: pxToRem(18),
-    ...responsiveFontSizes({ sm: 19, md: 20, lg: 20 }),
+    ...responsiveFontSizes({ xs: 16, sm: 20, md: 25, lg: 30 }),
   },
   h6: {
-    fontWeight: 700,
+    fontWeight: 500,
     lineHeight: 28 / 18,
     fontSize: pxToRem(17),
-    ...responsiveFontSizes({ sm: 18, md: 18, lg: 18 }),
+    ...responsiveFontSizes({ xs: 14, sm: 18, md: 20, lg: 25 }),
   },
   subtitle1: {
     fontWeight: 600,
@@ -96,12 +99,12 @@ export const typography = {
     fontWeight: 700,
     lineHeight: 1.5,
     fontSize: pxToRem(12),
-    textTransform: 'uppercase',
+    textTransform: "uppercase",
   },
   button: {
     fontWeight: 700,
     lineHeight: 24 / 14,
     fontSize: pxToRem(14),
-    textTransform: 'unset',
+    textTransform: "unset",
   },
 };
