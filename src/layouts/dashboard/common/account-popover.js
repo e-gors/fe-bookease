@@ -46,8 +46,7 @@ export default function AccountPopover() {
   const location = useLocation();
 
   const userAccount = HandleCache({ name: "user" }, "get");
-  const { profile_picture, first_name, last_name, email } = userAccount;
-  const fullname = first_name + " " + last_name;
+  const { profilePicture, name, email } = userAccount;
 
   const [open, setOpen] = useState(null);
   const [openAlert, setOpenAlert] = useState(false);
@@ -108,15 +107,15 @@ export default function AccountPopover() {
         }}
       >
         <Avatar
-          src={profile_picture ? profile_picture : account.photoURL}
-          alt={fullname ? fullname : account.displayName}
+          src={profilePicture ? profilePicture : account.photoURL}
+          alt={name ? name : account.displayName}
           sx={{
             width: 36,
             height: 36,
             border: (theme) => `solid 2px ${theme.palette.background.default}`,
           }}
         >
-          {fullname ? fullname : account.displayName.charAt(0).toUpperCase()}
+          {name ? name : account.displayName.charAt(0).toUpperCase()}
         </Avatar>
       </IconButton>
 
@@ -137,7 +136,7 @@ export default function AccountPopover() {
       >
         <Box sx={{ my: 1.5, px: 2 }}>
           <Typography variant="subtitle2" noWrap>
-            {fullname ? fullname : account.displayName}
+            {name ? name : account.displayName}
           </Typography>
           <Typography variant="body2" sx={{ color: "text.secondary" }} noWrap>
             {email ? email : account.email}

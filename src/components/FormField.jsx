@@ -25,7 +25,7 @@ function FormField(props) {
     value: rest.value || "",
   };
 
-  return <TextField size="small" variant="outlined" {...fieldProps} />;
+  return <TextField variant="outlined" {...fieldProps} />;
 }
 
 export default FormField;

@@ -12,7 +12,7 @@ import Iconify from "../../../../../components/iconify";
 
 // ----------------------------------------------------------------------
 
-export default function UserTableRow({
+export default function ServicesTableRow({
   selected,
   name,
   description,
@@ -67,14 +67,9 @@ export default function UserTableRow({
   );
 }
 
-UserTableRow.propTypes = {
-  avatarUrl: PropTypes.any,
-  company: PropTypes.any,
+ServicesTableRow.propTypes = {
   handleClick: PropTypes.func,
-  isVerified: PropTypes.any,
-  first_name: PropTypes.any,
-  last_name: PropTypes.any,
-  role: PropTypes.any,
+  name: PropTypes.string,
+  description: PropTypes.string,
   selected: PropTypes.any,
-  status: PropTypes.string,
 };

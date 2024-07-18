@@ -40,7 +40,7 @@ export default function CommonTableToolbar({
       ) : (
         <OutlinedInput
           name="search"
-          value={filterValues.search}
+          value={filterValues?.search}
           onChange={onMultipleFilters}
           placeholder={placeholder}
           startAdornment={

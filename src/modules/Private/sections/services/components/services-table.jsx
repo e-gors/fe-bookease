@@ -39,14 +39,14 @@ export default function ServicesTable(props) {
     withNumber,
     loading,
     placeholder,
+    filterValues,
+    onMultipleFilters,
     ...rest
   } = props;
 
-  const [page, setPage] = useState(0);
   const [order, setOrder] = useState("asc");
   const [selected, setSelected] = useState([]);
   const [orderBy, setOrderBy] = useState("name");
-  const [filterName, setFilterName] = useState("");
 
   const handleSort = (event, id) => {
     const isAsc = orderBy === id && order === "asc";
@@ -91,24 +91,17 @@ export default function ServicesTable(props) {
     onRowsChangePage && onRowsChangePage(event.target.value);
   };
 
-  const handleFilterByName = (event) => {
-    setPage(0);
-    setFilterName(event.target.value);
-  };
-
   const dataFiltered = applyFilter({
     inputData: data,
     comparator: getComparator(order, orderBy),
-    filterName,
   });
 
-  const notFound = !dataFiltered.length && !!filterName;
+  const notFound = !dataFiltered.length && !!filterValues.search;
 
   const paginationProps = {
     rowsPerPageOptions: [10, 25, 50, 100, 150, 250],
     component: "div",
     count: 1,
-    rowsPerPage: 10,
     page: 1,
     ...rest,
   };
@@ -135,8 +128,8 @@ export default function ServicesTable(props) {
       <Card>
         <CommonToolbar
           numSelected={selected.length}
-          filterName={filterName}
-          onFilterName={handleFilterByName}
+          search={filterValues.search}
+          onMultipleFilters={onMultipleFilters}
           placeholder={placeholder}
         />
 
@@ -165,15 +158,14 @@ export default function ServicesTable(props) {
 
                 <TableEmptyRows
                   height={77}
-                  emptyRows={emptyRows(page, rowsPerPage, data.length)}
+                  emptyRows={emptyRows(rest.page, rowsPerPage, data.length)}
                 />
 
-                {notFound && <TableNoData query={filterName} />}
+                {notFound && !loading && (
+                  <TableNoData query={filterValues.search} />
+                )}
               </TableBody>
             </Table>
-            {!loading && data.length === 0 && (
-              <Typography align="center">No item(s) at the moment</Typography>
-            )}
           </TableContainer>
         </Scrollbar>
 

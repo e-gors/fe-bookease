@@ -17,6 +17,11 @@ const routes = [
     auth: true,
   },
   {
+    path: "/categories",
+    component: "pages/Categories",
+    auth: true,
+  },
+  {
     path: "/services",
     component: "pages/Services",
     auth: true,

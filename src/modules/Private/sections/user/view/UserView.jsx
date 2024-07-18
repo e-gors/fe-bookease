@@ -149,8 +149,12 @@ export default function UserPage() {
 
   const handleRowChange = (value) => {
     fetchingData({ limit: value });
-    handleFilterChange({ name: "limit", value: value });
+    setFilters((prev) => ({
+      ...prev,
+      limit: value,
+    }));
   };
+  
   const handleClearFilters = () => {
     setPage(0);
     setFilters((prev) => ({

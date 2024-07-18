@@ -16,7 +16,6 @@ import {
   ListItemIcon,
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
-import AdbIcon from "@mui/icons-material/Adb";
 import { TextButton, OutlinedButton } from "../components/CustomButtons";
 import { useHistory, useLocation } from "react-router-dom";
 import HomeIcon from "@mui/icons-material/Home";
@@ -164,7 +163,10 @@ function PublicAppBar() {
           }}
         >
           <Box sx={{ display: "flex", alignItems: "center" }}>
-            <Logo sx={{ mr: 1, display: { xs: "none", md: "block" } }} />
+            <Logo sx={{ display: { xs: "none", md: "block" } }} />
+            <Typography sx={{ display: { xs: "none", md: "block" } }}>
+              {process.env.REACT_APP_NAME}
+            </Typography>
           </Box>
 
           <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
@@ -188,7 +190,8 @@ function PublicAppBar() {
               }}
             >
               <Box sx={{ display: "flex", alignItems: "center", m: 2 }}>
-                <Logo sx={{ mr: 1 }} />
+                <Logo />
+                <Typography>{process.env.REACT_APP_NAME}</Typography>
               </Box>
               <List>
                 {currentPath !== "login" &&

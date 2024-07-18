@@ -29,7 +29,7 @@ export default function Nav({ openNav, onCloseNav }) {
   const pathname = usePathname();
 
   const userAccount = HandleCache({ name: "user" }, "get");
-  const { profile_picture, fullname, role } = userAccount;
+  const { profilePicture, name, role } = userAccount;
 
   const upLg = useResponsive("up", "lg");
 
@@ -53,10 +53,10 @@ export default function Nav({ openNav, onCloseNav }) {
         bgcolor: (theme) => alpha(theme.palette.grey[500], 0.12),
       }}
     >
-      <Avatar src={profile_picture ? profile_picture : account.photoURL} alt="photoURL" />
+      <Avatar src={profilePicture ? profilePicture : account.photoURL} alt="photoURL" />
 
       <Box sx={{ ml: 2 }}>
-        <Typography variant="subtitle2">{fullname ? fullname : account.displayName}</Typography>
+        <Typography variant="subtitle2">{name ? name : account.displayName}</Typography>
 
         <Typography variant="body2" sx={{ color: "text.secondary" }}>
           {role ? role : account.role}

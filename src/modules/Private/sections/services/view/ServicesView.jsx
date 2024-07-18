@@ -1,6 +1,6 @@
 import React from "react";
 import Http from "../../../../../utils/Http";
-import UserTable from "../components/services-table";
+import ServicesTable from "../components/services-table";
 // ----------------------------------------------------------------------
 
 const columns = [
@@ -17,16 +17,24 @@ export default function ServicesView() {
   });
   const [filters, setFilters] = React.useState({
     limit: 10,
+    search: "",
   });
 
   React.useEffect(() => {
     const controller = new AbortController();
 
-    fetchingData();
-    return () => controller.abort();
-  }, []); // eslint-disable-line
+    const time = setTimeout(() => {
+      fetchingData();
+    }, 400);
+    return () => {
+      clearTimeout(time);
+      controller.abort();
+    };
+  }, [filters]); // eslint-disable-line
 
-  const handleFilterChange = (name, value) => {
+  const handleFilterChange = (event) => {
+    const {name, value} = event.target;
+    
     setFilters((prev) => ({
       ...prev,
       [name]: value,
@@ -57,12 +65,15 @@ export default function ServicesView() {
 
   const handleRowChange = (value) => {
     fetchingData({ limit: value });
-    handleFilterChange("limit", value);
+    setFilters((prev) => ({
+      ...prev,
+      limit: value,
+    }));
   };
 
   return (
     <>
-      <UserTable
+      <ServicesTable
         withPagination
         loading={loading}
         data={servicesList.data}
@@ -73,6 +84,8 @@ export default function ServicesView() {
         onRowsChangePage={handleRowChange}
         columns={columns}
         placeholder="Search Services..."
+        filterValues={filters}
+        onMultipleFilters={handleFilterChange}
       />
     </>
   );

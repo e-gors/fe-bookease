@@ -161,7 +161,7 @@ export default function UserTable(props) {
                     role={row.role}
                     status={row.status}
                     avatarUrl={getProfile(
-                      row.profile?.profile_picture,
+                      row.profile?.profilePicture,
                       row.profile?.gender,
                       i
                     )}
@@ -176,12 +176,11 @@ export default function UserTable(props) {
                   emptyRows={emptyRows(customPage, rowsPerPage, data.length)}
                 />
 
-                {!loading && notFound && <TableNoData query={filterValues.search} />}
+                {notFound && !loading && (
+                  <TableNoData query={filterValues.search} />
+                )}
               </TableBody>
             </Table>
-            {!loading && data.length === 0 && (
-              <Typography align="center">No item(s) at the moment</Typography>
-            )}
           </TableContainer>
         </Scrollbar>
 

@@ -31,7 +31,7 @@ export default function BlogsCard(props) {
             <Typography variant="subtitle1" sx={{ color: "#5ABED5" }}>
               Service 1
             </Typography>
-            <Typography gutterBottom variant="h6" component="div">
+            <Typography gutterBottom variant="h6">
               {props.title}
             </Typography>
             <Box
@@ -48,12 +48,12 @@ export default function BlogsCard(props) {
               </Typography>
             </Box>
             <Box sx={{ my: 2, display: "flex", alignItems: "center" }}>
-              <Avatar alt="Efren Goron" sx={{ width: 30, height: 30 }} />
+              <Avatar alt="Efren Goron" sx={{ width: 40, height: 40 }} />
               <Stack ml={2}>
-                <Typography sx={{ fontWeight: "bold", fontSize: 14 }}>
+                <Typography variant="subtitle2">
                   Efren Goron
                 </Typography>
-                <Typography sx={{ fontSize: 10 }}>March 18, 2024</Typography>
+                <Typography variant="caption" color="text.secondary">March 18, 2024</Typography>
               </Stack>
             </Box>
           </CardContent>
