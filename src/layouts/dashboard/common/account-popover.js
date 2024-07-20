@@ -14,6 +14,7 @@ import { useRouter } from "../../../routes/hooks";
 import { HandleCache } from "../../../utils/helpers";
 import CustomAlert from "../../../components/CustomAlert";
 import { useLocation } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 // ----------------------------------------------------------------------
 
@@ -44,10 +45,11 @@ const MENU_OPTIONS = [
 export default function AccountPopover() {
   const router = useRouter();
   const location = useLocation();
+  const userAccount = useSelector((state) => state.users.user);
 
-  const userAccount = HandleCache({ name: "user" }, "get");
   const { profilePicture, name, email } = userAccount;
 
+  const [selectedUrl, setSelectedUrl] = useState(null);
   const [open, setOpen] = useState(null);
   const [openAlert, setOpenAlert] = useState(false);
 
@@ -69,10 +71,11 @@ export default function AccountPopover() {
   };
 
   const handleNavigate = (link) => {
-    if(location.pathname === link){
-      handleClose()
-    }else{
-    router.push(link);
+    if (location.pathname === link) {
+      handleClose();
+    } else {
+      router.push(link);
+      setSelectedUrl(link);
     }
   };
 
@@ -145,8 +148,13 @@ export default function AccountPopover() {
 
         <Divider sx={{ borderStyle: "dashed" }} />
 
-        {MENU_OPTIONS.map((option) => (
-          <MenuItem key={option.label} onClick={() => handleNavigate(option.link)}>
+        {MENU_OPTIONS.map((option, i) => (
+          <MenuItem
+            key={i}
+            onClick={() => handleNavigate(option.link)}
+            selected={option.link === selectedUrl}
+            dense
+          >
             {option.label}
           </MenuItem>
         ))}

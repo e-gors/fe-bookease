@@ -5,22 +5,33 @@ function FormField(props) {
   const { errors, name, customError, ...rest } = props;
 
   let error = false;
-  let helperText = "";
+  let helperTextArray = [];
 
   if (customError) {
     error = true;
-    helperText = customError;
+    helperTextArray.push(customError);
   }
 
   if (errors) {
-    error = (errors && errors.has(name)) || false;
-    helperText = (errors && errors.first(name)) || "";
+    if (errors.has(name)) {
+      error = true;
+      helperTextArray.push(errors.first(name));
+      // Assuming errors object has a method to get all errors for a field
+      if (errors.getAll) {
+        helperTextArray = helperTextArray.concat(errors.getAll(name));
+      }
+    }
   }
+
+  const helperText = helperTextArray.join("\n");
 
   const fieldProps = {
     error,
     name,
     helperText,
+    FormHelperTextProps: {
+      style: { whiteSpace: "pre-line" },
+    },
     ...rest,
     value: rest.value || "",
   };

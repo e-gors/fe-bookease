@@ -2,10 +2,16 @@ import { Box, Grid, Skeleton, Typography } from "@mui/material";
 import ServiceCard from "../components/ServiceCard";
 import React from "react";
 import Http from "../../../../../utils/Http";
+import { useDispatch } from "react-redux";
+import { setCategories } from "../../../../../redux/actions/categoryActions";
 
-export default function Services() {
+function Services() {
+  const dispatch = useDispatch();
+
   const [loading, setLoading] = React.useState(false);
   const [services, setServices] = React.useState([]);
+  const [selectedService, setSelectedService] = React.useState({});
+  const [open, setOpen] = React.useState(false);
   const [filters, setFilters] = React.useState({
     includeChildren: true,
   });
@@ -15,7 +21,7 @@ export default function Services() {
 
     fetchData(filters);
     return () => controller.abort();
-  }, []);
+  }, [filters]); //eslint-disable-line
 
   const fetchData = (params = {}) => {
     setLoading(true);
@@ -25,6 +31,7 @@ export default function Services() {
       },
     })
       .then((res) => {
+        dispatch(setCategories(res.data.data));
         setServices(res.data.data);
         setLoading(false);
       })
@@ -32,6 +39,15 @@ export default function Services() {
         console.log(err.message);
         setLoading(false);
       });
+  };
+
+  const handleSelectService = (service) => {
+    if (service.id === selectedService.id) {
+      setSelectedService({});
+    } else {
+      setSelectedService(service);
+      setOpen(true);
+    }
   };
 
   return (
@@ -62,7 +78,14 @@ export default function Services() {
         {!loading
           ? services?.map((service, i) => (
               <Grid item xs={12} sm={6} md={4} key={i}>
-                <ServiceCard data={service} />
+                <ServiceCard
+                  data={service}
+                  selectedService={selectedService}
+                  onSelectService={handleSelectService}
+                  selected={selectedService.id === service.id}
+                  open={open}
+                  onClose={setOpen}
+                />
               </Grid>
             ))
           : Array.from(new Array(12)).map((_, i) => (
@@ -74,3 +97,5 @@ export default function Services() {
     </Box>
   );
 }
+
+export default React.memo(Services);

@@ -3,6 +3,7 @@ import { TextField } from "@mui/material";
 
 function SelectDropdown(props) {
   const {
+    name,
     errors,
     options = [],
     customError,
@@ -11,26 +12,38 @@ function SelectDropdown(props) {
   } = props;
 
   let error = false;
-  let helperText = "";
+  let helperTextArray = [];
 
-  // handle customError
   if (customError) {
-    error = customError.error || false;
-    helperText = customError.message || "";
+    error = true;
+    helperTextArray.push(customError);
   }
 
   if (errors) {
-    error = (errors && errors.has(props.name)) || false;
-    helperText = (errors && errors.first(props.name)) || "";
+    if (errors.has(name)) {
+      error = true;
+      helperTextArray.push(errors.first(name));
+      // Assuming errors object has a method to get all errors for a field
+      if (errors.getAll) {
+        helperTextArray = helperTextArray.concat(errors.getAll(name));
+      }
+    }
   }
+
+  const helperText = helperTextArray.join("\n");
 
   const newProps = {
     variant: "outlined",
     select: true,
     fullWidth: true,
     error,
+    name,
     helperText,
+    FormHelperTextProps: {
+      style: { whiteSpace: "pre-line" },
+    },
     ...rest,
+    value: rest.value || "",
   };
 
   return (

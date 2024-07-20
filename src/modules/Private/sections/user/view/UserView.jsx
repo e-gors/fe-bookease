@@ -36,7 +36,7 @@ const filterItems = [
         value: false,
       },
     ],
-    operators: ["ne"],
+    operators: ["eq"],
   },
   {
     type: "dropdown",

@@ -1,4 +1,5 @@
 import ReeValidate from "ree-validate-18";
+import PropTypes from "prop-types";
 
 export const handleErrorResponse = (err) => {
   if (
@@ -26,7 +27,9 @@ export const Validator = (fields) => {
   const validator = new ReeValidate.Validator(fields);
 
   const formatFieldName = (field) => {
-    // replace underscores with spaces and capitalize the first letter
+    // Replace camelCase with spaces
+    field = field.replace(/([a-z])([A-Z])/g, "$1 $2");
+    // Replace underscores with spaces and capitalize the first letter
     return field
       .replace(/_/g, " ")
       .replace(/\b\w/g, (char) => char.toUpperCase());
@@ -78,6 +81,8 @@ export const isMatchPassword = (password, re_password) => {
   return password === re_password;
 };
 
+
+// Local Storage handling
 export const HandleCache = (data, method) => {
   if (Array.isArray(data)) {
     data.forEach((item) => {
@@ -100,21 +105,27 @@ export const HandleCache = (data, method) => {
   }
 };
 
+//Local Storage handling Props
+HandleCache.propTypes = {
+  data: PropTypes.object.isRequired,
+  method: PropTypes.string.isRequired,
+};
+
 //get profile of the user to be display in the table
 export const getProfile = (imageUrl, gender, index) => {
   let url;
-  
+
   if (imageUrl) {
     url = imageUrl;
   } else {
     // Determine the maximum index based on gender
-    const maxIndex = gender === 'male' ? 7 : 8;
+    const maxIndex = gender === "male" ? 7 : 8;
 
     // Calculate the actual index using modulus to loop within 0-8 range
-    const avatarIndex = index % (maxIndex);
+    const avatarIndex = index % maxIndex;
 
     // Construct the URL based on gender and avatar index
-    if (gender === 'male') {
+    if (gender === "male") {
       url = `/assets/images/avatars/m_avatar_${avatarIndex}.jpg`;
     } else {
       url = `/assets/images/avatars/f_avatar_${avatarIndex}.jpg`;
@@ -124,14 +135,12 @@ export const getProfile = (imageUrl, gender, index) => {
   return url;
 };
 
-
 //convert value to money format
 export const toMoneyFormat = (value, precision = 2) => {
-	return parseFloat(value)
-		.toFixed(precision)
-		.replace(/\d(?=(\d{3})+\.)/g, "$&,");
+  return parseFloat(value)
+    .toFixed(precision)
+    .replace(/\d(?=(\d{3})+\.)/g, "$&,");
 };
-
 
 //optimizing fetch
 

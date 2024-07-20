@@ -26,20 +26,16 @@ const roles = [
 export default function SelectRole({ selectedRole, handleChangeRole }) {
   return (
     <Box sx={{ my: 5 }}>
-      <Typography
-        variant="subtitle1"
-        gutterBottom
-        fontWeight="bold"
-        sx={{ mb: 2 }}
-      >
-        Select Your Role
+      <Typography variant="subtitle1" gutterBottom>
+        Let's Get Started
       </Typography>
-      <Stack direction={{ xs: "column", md: "row" }} spacing={2}>
+      <Stack direction="column" spacing={2}>
         {roles.map((role, i) => (
           <Stack
             key={i}
             direction="row"
             spacing={2}
+            justifyContent="space-between"
             mt={2}
             sx={{
               border: `2px solid ${
@@ -48,7 +44,7 @@ export default function SelectRole({ selectedRole, handleChangeRole }) {
               color: role.role === selectedRole ? "#FE9D8C" : "#5ABED5",
               p: 2,
               cursor: "pointer",
-              borderRadius: 4,
+              borderRadius: 2,
               transition: "0.3s all",
             }}
             onClick={() => handleChangeRole(role.role)}

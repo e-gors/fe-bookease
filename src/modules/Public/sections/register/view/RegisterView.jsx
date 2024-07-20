@@ -121,6 +121,7 @@ export default function RegisterView() {
           ToastNotification("error", errorMessage, options);
         }
       });
+    setLoading(false);
   };
 
   const handleChange = (e) => {
@@ -184,7 +185,7 @@ export default function RegisterView() {
     });
   };
 
-  //if user uses external means to register and is already registered 
+  //if user uses external means to register and is already registered
   const Login = (data) => {
     login(data)
       .then((res) => {
@@ -212,7 +213,7 @@ export default function RegisterView() {
           if (res.data.status === 201) {
             HandleCache({ name: "accessToken", data: res.data.token }, "set");
             HandleCache({ name: "user", data: res.data.user }, "set");
-            router.push("/dashboard");
+            router.push("/complete-registration");
           } else {
             ToastNotification("error", res.data.message, options);
           }
@@ -274,6 +275,7 @@ export default function RegisterView() {
           value={formValues.values.retype_password}
           onChange={handleChange}
           errors={formValues.errors}
+          customError={error}
           type={showPassword.retype_password ? "text" : "password"}
           required
           onKeyPress={handleKeyPress}
@@ -297,7 +299,7 @@ export default function RegisterView() {
             ),
           }}
         />
-        {error && (
+        {/* {error && (
           <FormHelperText
             error
             component="span"
@@ -305,7 +307,7 @@ export default function RegisterView() {
           >
             {error}
           </FormHelperText>
-        )}
+        )} */}
       </Stack>
 
       <Stack

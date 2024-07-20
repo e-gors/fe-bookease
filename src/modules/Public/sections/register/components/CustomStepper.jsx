@@ -157,12 +157,8 @@ ColorlibStepIcon.propTypes = {
 };
 
 const infoValidator = Validator({
-  first_name: "required",
-  last_name: "required",
-  gender: "required",
   phone_number: "required|regex:[^09{9}$]|length:11",
-  street: "required",
-  barangay: "required",
+  address: "required",
   city: "required",
   province: "required",
   country: "required",
@@ -170,9 +166,8 @@ const infoValidator = Validator({
 });
 
 const accountValidator = Validator({
-  email: "required|email",
-  password: "required",
-  re_password: "required",
+  name: "required",
+  user_type: "required",
 });
 
 const steps = ["Select Role", "Provide Information", "Create User Account"];
@@ -180,28 +175,23 @@ const steps = ["Select Role", "Provide Information", "Create User Account"];
 function CustomStepper() {
   const [activeStep, setActiveStep] = React.useState(0);
   const [selectedRole, setSelectedRole] = React.useState("");
-  const [info, setInfo] = React.useState({
+  const [accountValues, setAccountValues] = React.useState({
     values: {
-      first_name: "",
-      last_name: "",
-      gender: "",
+      name: "",
+      user_type: "",
+    },
+    errors: accountValidator.errors,
+  });
+  const [infoValues, setInfoValues] = React.useState({
+    values: {
       phone_number: "",
-      street: "",
-      barangay: "",
+      address: "",
       city: "",
       province: "",
       country: "",
       postal_code: "",
     },
     errors: infoValidator.errors,
-  });
-  const [account, setAccount] = React.useState({
-    values: {
-      email: "",
-      password: "",
-      re_password: "",
-    },
-    errors: accountValidator.errors,
   });
 
   React.useEffect(() => {
@@ -217,15 +207,15 @@ function CustomStepper() {
       setSelectedRole(role);
     }
     if (information) {
-      setInfo((prevInfo) => ({
+      setInfoValues((prevInfo) => ({
         ...prevInfo,
-        values: information,
+        values: { ...information },
       }));
     }
     if (accountValues) {
-      setAccount((prevAccount) => ({
+      setAccountValues((prevAccount) => ({
         ...prevAccount,
-        values: accountValues,
+        values: { ...accountValues },
       }));
     }
   };
@@ -242,13 +232,15 @@ function CustomStepper() {
     setSelectedRole(role);
   };
 
-
   const handleChange = (state, e) => {
+
     const name = e.target.name;
     const value = e.target.value;
 
+    console.log({name, value});
+
     if (state === "info") {
-      setInfo((prev) => ({
+      setInfoValues((prev) => ({
         ...prev,
         values: {
           ...prev.values,
@@ -259,13 +251,13 @@ function CustomStepper() {
       const { errors } = infoValidator;
 
       infoValidator.validate(name, value).then(() => {
-        setInfo((prev) => ({
+        setInfoValues((prev) => ({
           ...prev,
           errors,
         }));
       });
     } else {
-      setAccount((prev) => ({
+      setAccountValues((prev) => ({
         ...prev,
         values: {
           ...prev.values,
@@ -276,7 +268,7 @@ function CustomStepper() {
       const { errors } = accountValidator;
 
       accountValidator.validate(name, value).then(() => {
-        setAccount((prev) => ({
+        setAccountValues((prev) => ({
           ...prev,
           errors,
         }));
@@ -293,24 +285,27 @@ function CustomStepper() {
         handleNext();
       }
     } else if (activeStep === 1) {
-      infoValidator.validateAll(info.values).then((success) => {
+      infoValidator.validateAll(infoValues.values).then((success) => {
         if (success) {
-          HandleCache({ name: "info", data: info.values }, "set");
+          HandleCache({ name: "infoValues", data: infoValues.values }, "set");
           handleNext();
         } else {
-          setInfo((prev) => ({
+          setInfoValues((prev) => ({
             ...prev,
             errors: infoValidator.errors,
           }));
         }
       });
     } else if (activeStep === 2) {
-      accountValidator.validateAll(account.values).then((success) => {
+      accountValidator.validateAll(accountValues.values).then((success) => {
         if (success) {
-          HandleCache({ name: "account", data: account.values }, "set");
+          HandleCache(
+            { name: "accountValues", data: accountValues.values },
+            "set"
+          );
           handleSubmit();
         } else {
-          setAccount((prev) => ({
+          setAccountValues((prev) => ({
             ...prev,
             errors: accountValidator.errors,
           }));
@@ -330,15 +325,18 @@ function CustomStepper() {
   const handleSubmit = () => {
     const data = {
       selectedRole: selectedRole,
-      infoValues: info.values,
-      accountValues: account.values,
+      infoValues: infoValues.values,
+      accountValues: accountValues.values,
     };
 
     console.group(data);
   };
 
   return (
-    <Box sx={{ width: "100%" }} maxWidth="md">
+    <Box
+      sx={{ width: "100%", my: 10, mx: "auto", height: "auto" }}
+      maxWidth="sm"
+    >
       <ToastNotificationContainer />
       <Stepper
         alternativeLabel
@@ -360,14 +358,15 @@ function CustomStepper() {
       {activeStep === 1 && (
         <FillupInfo
           role={selectedRole}
-          info={info}
+          account={accountValues}
+          info={infoValues}
           handleKeyPress={handleKeyPress}
           handleChange={handleChange}
         />
       )}
       {activeStep === 2 && (
         <CreateAccount
-          account={account}
+          account={accountValues}
           handleKeyPress={handleKeyPress}
           handleChange={handleChange}
         />

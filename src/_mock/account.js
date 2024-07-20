@@ -1,7 +1,8 @@
 // ----------------------------------------------------------------------
 
 export const account = {
-  displayName: 'Efren Goron',
-  email: 'egoronweb@gmail.com',
+  displayName: 'BookEase',
+  role: "New User",
+  email: 'bookease@gmail.com',
   photoURL: '/assets/images/avatars/m_avatar_5.jpg',
 };

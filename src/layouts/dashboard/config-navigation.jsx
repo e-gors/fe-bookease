@@ -9,7 +9,6 @@ const icon = (name) => (
     sx={{ width: 1, height: 1 }}
   />
 );
-const user = HandleCache({ name: "user" }, "get");
 
 const navConfig = [
   {

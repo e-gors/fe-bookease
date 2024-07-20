@@ -40,6 +40,9 @@ import {
 } from "../../../../../components/ToastNotificationComponents";
 import { login, register } from "../../service";
 import { signInWithPopup } from "firebase/auth";
+import { useDispatch } from "react-redux";
+import { setUser } from "../../../../../redux/actions/userActions";
+import { setAccount } from "../../../../../redux/actions/registerActions";
 // ----------------------------------------------------------------------
 
 const validator = Validator({
@@ -48,8 +51,8 @@ const validator = Validator({
 });
 
 export default function LoginView() {
+  const dispatch = useDispatch();
   const theme = useTheme();
-
   const router = useRouter();
 
   const [formValues, setFormValues] = React.useState({
@@ -138,26 +141,11 @@ export default function LoginView() {
     });
   };
 
-  //if user login using external means but not yet registered in the system
+  // using 3rd party and not yet register save to redux storage
   const Register = (data) => {
-    register(data)
-      .then((res) => {
-        if (res.data.status === 201) {
-          ToastNotification("success", "Registration Successfully", options);
-          HandleCache([
-            { name: "accessToken", data: res.data.token, method: "set" },
-            { name: "user", data: res.data.user, method: "set" },
-          ]);
-          router.push("/dashboard");
-        } else {
-          ToastNotification("error", res.data.message, options);
-        }
-        setLoading(false);
-      })
-      .catch((err) => {
-        ToastNotification("error", err.message, options);
-        setLoading(false);
-      });
+    console.log(data);
+    // dispatch(setAccount(data));
+    // router.push("/complete-registration");
   };
 
   //if user user external means to login or by manual login
@@ -166,11 +154,14 @@ export default function LoginView() {
     login(data)
       .then((res) => {
         if (res.data.status === 200) {
-          HandleCache([
-            { name: "accessToken", data: res.data.token, method: "set" },
-            { name: "user", data: res.data.user, method: "set" },
-          ]);
-          router.push("/dashboard");
+          const { token, user } = res.data;
+          HandleCache({ name: "accessToken", data: token }, "set");
+          dispatch(setUser(res.data.user));
+          if (user?.isVerified === true) {
+            router.push("/dashboard");
+          } else {
+            router.push("/verify-email");
+          }
         } else {
           ToastNotification("error", res.data.message, options);
         }

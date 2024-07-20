@@ -1,7 +1,6 @@
 import React, { lazy, Suspense } from "react";
 import { Route } from "react-router-dom";
 import Loader from "../layouts/Loader";
-import PublicAppBar from "../layouts/PublicAppBar";
 import PublicDefaultLayout from "../layouts/PublicDefaultLayout";
 
 function Public(props) {

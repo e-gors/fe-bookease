@@ -8,6 +8,14 @@ const routes = [
     component: "pages/Register",
   },
   {
+    path: "/complete-registration",
+    component: "pages/CompleteRegistration",
+  },
+  {
+    path: "/verify-email",
+    component: "pages/VerifyEmail",
+  },
+  {
     path: "/login",
     component: "pages/Login",
   },

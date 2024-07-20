@@ -20,7 +20,8 @@ import Logo from "../../components/logo";
 import Scrollbar from "../../components/scrollbar";
 
 import { NAV } from "./config-layout";
-import { HandleCache } from "../../utils/helpers";
+import { Divider } from "@mui/material";
+import { useSelector } from "react-redux";
 
 // ----------------------------------------------------------------------
 
@@ -33,8 +34,7 @@ export default function Nav({
 }) {
   const pathname = usePathname();
 
-  const userAccount = HandleCache({ name: "user" }, "get");
-  const { profilePicture, name, role } = userAccount;
+  const userAccount = useSelector((state) => state.users.user);
 
   const upLg = useResponsive("up", "lg");
 
@@ -48,7 +48,7 @@ export default function Nav({
   const renderAccount = (
     <Box
       sx={{
-        my: 3,
+        my: 1,
         mx: 2.5,
         py: 2,
         px: 2.5,
@@ -59,17 +59,21 @@ export default function Nav({
       }}
     >
       <Avatar
-        src={profilePicture ? profilePicture : account.photoURL}
+        src={
+          userAccount?.profilePicture
+            ? userAccount?.profilePicture
+            : account.photoURL
+        }
         alt="photoURL"
       />
 
       <Box sx={{ ml: 2 }}>
         <Typography variant="subtitle2">
-          {name ? name : account.displayName}
+          {userAccount?.name ? userAccount?.name : account.displayName}
         </Typography>
 
         <Typography variant="body2" sx={{ color: "text.secondary" }}>
-          {role ? role : account.role}
+          {userAccount?.role ? userAccount?.role : account.role}
         </Typography>
       </Box>
     </Box>
@@ -101,8 +105,8 @@ export default function Nav({
     >
       <Logo sx={{ mt: 3, ml: 4 }} />
 
-      {renderAccount}
-
+      {userAccount && renderAccount}
+      <Divider sx={{ my: 2 }} />
       {renderMenu}
 
       <Box sx={{ flexGrow: 1 }} />

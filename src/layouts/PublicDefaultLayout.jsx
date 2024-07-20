@@ -7,17 +7,7 @@ function PublicDefaultLayout({ children }) {
   return (
     <Box>
       <PublicAppBar />
-      <Box
-        sx={{
-          height: "auto",
-          minHeight: "90vh",
-          width: "90%",
-          mx: "auto",
-          my: 10,
-        }}
-      >
-        {children}
-      </Box>
+      <Box sx={{ my: { xs: 5, md: 10 }, mx: { xs: 2, md: 10 } }}>{children}</Box>
       <Footer />
     </Box>
   );

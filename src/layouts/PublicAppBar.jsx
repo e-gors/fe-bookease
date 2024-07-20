@@ -32,6 +32,10 @@ function PublicAppBar() {
     "Home";
   const [selectedPage, setSelectedPage] = React.useState(initialPage);
 
+  const paths = ["login", "register", "complete-registration", "verify-email"];
+
+  const shouldRenderHomeLink = paths.includes(currentPath);
+
   const handleOpenNavMenu = () => {
     setDrawerOpen(true);
   };
@@ -54,7 +58,11 @@ function PublicAppBar() {
   const handlePageClick = (page) => {
     setDrawerOpen(false);
     setSelectedPage(page);
-    scrollToSection(page.toLowerCase());
+    if (paths.includes(currentPath)) {
+      history.push("/");
+    } else {
+      scrollToSection(page.toLowerCase());
+    }
   };
 
   const handleNavigate = (link) => {
@@ -108,10 +116,6 @@ function PublicAppBar() {
       window.removeEventListener("scroll", handleScroll);
     };
   }, [history, currentPath]);
-
-  const paths = ["login", "register", "complete-registration", "verify-email"];
-
-  const shouldRenderHomeLink = paths.includes(currentPath);
 
   return (
     <AppBar

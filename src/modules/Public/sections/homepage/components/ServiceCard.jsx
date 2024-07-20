@@ -5,19 +5,16 @@ import React, { useState } from "react";
 import MoreDataModal from "./MoreDataModal";
 
 export default function ServiceCard(props) {
-  const { data, sx, ...rest } = props;
-  const [selectedService, setSelectedService] = useState({});
-  const [openMore, setOpenMore] = useState(false);
-
-  const handleSelect = (service) => {
-    if (service.id === selectedService.id) {
-      setSelectedService({});
-      setOpenMore(false);
-    } else {
-      setSelectedService(service);
-      setOpenMore(true);
-    }
-  };
+  const {
+    data,
+    open,
+    onClose,
+    sx,
+    selected,
+    selectedService,
+    onSelectService,
+    ...rest
+  } = props;
 
   return (
     <>
@@ -29,8 +26,7 @@ export default function ServiceCard(props) {
           sx={{
             p: 2,
             borderRadius: 1,
-            backgroundColor:
-              selectedService.id === data.id ? "#fe9d8c" : "white",
+            backgroundColor: selected ? "#fe9d8c" : "white",
             boxShadow: 2,
             cursor: "pointer",
             ...sx,
@@ -39,7 +35,7 @@ export default function ServiceCard(props) {
               boxShadow: 10,
             },
           }}
-          onClick={() => handleSelect(data)}
+          onClick={() => onSelectService(data)}
         >
           <Box
             component={Stack}
@@ -53,7 +49,7 @@ export default function ServiceCard(props) {
                 edge="start"
                 disableRipple
                 tabIndex={-1}
-                checked={selectedService?.id === data.id}
+                checked={selected}
                 inputProps={{ "aria-labelledby": data?.name }}
                 onClick={(e) => e.stopPropagation()}
               />
@@ -62,7 +58,7 @@ export default function ServiceCard(props) {
             <Tooltip title={data?.description} arrow sx={{ cursor: "pointer" }}>
               <InfoIcon
                 sx={{
-                  color: selectedService?.id === data.id ? "white" : "black",
+                  color: selected ? "white" : "black",
                 }}
               />
             </Tooltip>
@@ -84,9 +80,11 @@ export default function ServiceCard(props) {
       </Stack>
 
       <MoreDataModal
+        selectedService={selectedService}
+        onSelectService={onSelectService}
         data={selectedService}
-        open={openMore}
-        onClose={() => setOpenMore(false)}
+        open={open}
+        onClose={() => onClose(false)}
       />
     </>
   );
@@ -94,15 +92,15 @@ export default function ServiceCard(props) {
 
 ServiceCard.propTypes = {
   data: PropTypes.shape({
-    id: PropTypes.number.isRequired,
-    name: PropTypes.string.isRequired,
-    description: PropTypes.string.isRequired,
+    id: PropTypes.number,
+    name: PropTypes.string,
+    description: PropTypes.string,
     children: PropTypes.arrayOf(
       PropTypes.shape({
-        id: PropTypes.number.isRequired,
-        name: PropTypes.string.isRequired,
-        description: PropTypes.string.isRequired,
+        id: PropTypes.number,
+        name: PropTypes.string,
+        description: PropTypes.string,
       })
     ),
-  }).isRequired,
+  }),
 };

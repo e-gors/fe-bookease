@@ -116,7 +116,7 @@ export default function Contact() {
           alignItems: "center",
           alignContent: "center",
           gap: 5,
-          my: { xs: 5, md: 10 },
+          mt: 5,
         }}
         id="contact"
       >
@@ -178,6 +178,7 @@ export default function Contact() {
                       onChange={handleChange}
                       errors={formValues.errors}
                       fullWidth
+                      size="small"
                     />
                   </Grid>
                   <Grid item xs={6} sm={6}>
@@ -189,6 +190,7 @@ export default function Contact() {
                       onChange={handleChange}
                       errors={formValues.errors}
                       fullWidth
+                      size="small"
                     />
                   </Grid>
                   <Grid item xs={12} sm={6}>
@@ -201,6 +203,7 @@ export default function Contact() {
                       errors={formValues.errors}
                       type="email"
                       fullWidth
+                      size="small"
                     />
                   </Grid>
                   <Grid item xs={12} sm={6}>
@@ -212,6 +215,7 @@ export default function Contact() {
                       onChange={handleChange}
                       errors={formValues.errors}
                       fullWidth
+                      size="small"
                     />
                   </Grid>
                   <Grid item xs={12} sm={12}>
@@ -223,6 +227,7 @@ export default function Contact() {
                       onChange={handleChange}
                       errors={formValues.errors}
                       fullWidth
+                      size="small"
                     />
                   </Grid>
                   <Grid item xs={12} sm={12}>
