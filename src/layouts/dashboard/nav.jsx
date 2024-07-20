@@ -9,7 +9,7 @@ import { alpha } from "@mui/material/styles";
 import Typography from "@mui/material/Typography";
 import ListItemButton from "@mui/material/ListItemButton";
 
-import { usePathname } from "../../routes/hooks";
+import { usePathname, useRouter } from "../../routes/hooks";
 import { RouterLink } from "../../routes/components";
 
 import { useResponsive } from "../../hooks/use-responsive";
@@ -20,12 +20,17 @@ import Logo from "../../components/logo";
 import Scrollbar from "../../components/scrollbar";
 
 import { NAV } from "./config-layout";
-import navConfig from "./config-navigation";
 import { HandleCache } from "../../utils/helpers";
 
 // ----------------------------------------------------------------------
 
-export default function Nav({ openNav, onCloseNav }) {
+export default function Nav({
+  selectedPage,
+  handlePageClick,
+  navConfig,
+  openNav,
+  onCloseNav,
+}) {
   const pathname = usePathname();
 
   const userAccount = HandleCache({ name: "user" }, "get");
@@ -53,10 +58,15 @@ export default function Nav({ openNav, onCloseNav }) {
         bgcolor: (theme) => alpha(theme.palette.grey[500], 0.12),
       }}
     >
-      <Avatar src={profilePicture ? profilePicture : account.photoURL} alt="photoURL" />
+      <Avatar
+        src={profilePicture ? profilePicture : account.photoURL}
+        alt="photoURL"
+      />
 
       <Box sx={{ ml: 2 }}>
-        <Typography variant="subtitle2">{name ? name : account.displayName}</Typography>
+        <Typography variant="subtitle2">
+          {name ? name : account.displayName}
+        </Typography>
 
         <Typography variant="body2" sx={{ color: "text.secondary" }}>
           {role ? role : account.role}
@@ -68,7 +78,12 @@ export default function Nav({ openNav, onCloseNav }) {
   const renderMenu = (
     <Stack component="nav" spacing={0.5} sx={{ px: 2 }}>
       {navConfig.map((item, i) => (
-        <NavItem key={i} item={item} />
+        <NavItem
+          key={i}
+          item={item}
+          selected={selectedPage === item.title}
+          handlePageClick={handlePageClick}
+        />
       ))}
     </Stack>
   );
@@ -132,19 +147,30 @@ export default function Nav({ openNav, onCloseNav }) {
 Nav.propTypes = {
   openNav: PropTypes.bool,
   onCloseNav: PropTypes.func,
+  selectedPage: PropTypes.string,
+  handlePageClick: PropTypes.func,
 };
 
 // ----------------------------------------------------------------------
 
-function NavItem({ item }) {
+function NavItem({ item, selected, handlePageClick }) {
   const pathname = usePathname();
+  const router = useRouter();
 
   const active = item.path === pathname;
 
+  const handleClick = () => {
+    if (handlePageClick !== undefined) {
+      handlePageClick(item.title);
+    } else {
+      router.push(item.path);
+    }
+  };
+
   return (
     <ListItemButton
-      component={RouterLink}
-      href={item.path}
+      onClick={handleClick}
+      selected={selected}
       sx={{
         minHeight: 44,
         borderRadius: 0.75,
@@ -166,11 +192,13 @@ function NavItem({ item }) {
         {item.icon}
       </Box>
 
-      <Box component="span">{item.title} </Box>
+      <Box component="span">{item.title}</Box>
     </ListItemButton>
   );
 }
 
 NavItem.propTypes = {
   item: PropTypes.object,
+  selected: PropTypes.bool,
+  handlePageClick: PropTypes.func,
 };

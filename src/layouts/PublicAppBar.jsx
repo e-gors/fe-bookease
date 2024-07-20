@@ -7,50 +7,18 @@ import {
   Typography,
   Container,
   Button,
-  Drawer,
-  List,
-  ListItem,
-  ListItemButton,
-  ListItemText,
   Stack,
-  ListItemIcon,
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import { TextButton, OutlinedButton } from "../components/CustomButtons";
 import { useHistory, useLocation } from "react-router-dom";
-import HomeIcon from "@mui/icons-material/Home";
-import HomeRepairServiceIcon from "@mui/icons-material/HomeRepairService";
-import InfoIcon from "@mui/icons-material/Info";
-import BookIcon from "@mui/icons-material/Book";
-import ContactPageIcon from "@mui/icons-material/ContactPage";
 import LanguagePopover from "./dashboard/common/language-popover";
 import NotificationsPopover from "./dashboard/common/notifications-popover";
 import AccountPopover from "./dashboard/common/account-popover";
 import { isAuth } from "../utils/helpers";
 import Logo from "../components/logo";
-
-const pages = [
-  {
-    icon: <HomeIcon />,
-    name: "Home",
-  },
-  {
-    icon: <HomeRepairServiceIcon />,
-    name: "Services",
-  },
-  {
-    icon: <InfoIcon />,
-    name: "About",
-  },
-  {
-    icon: <BookIcon />,
-    name: "Blog",
-  },
-  {
-    icon: <ContactPageIcon />,
-    name: "Contact",
-  },
-];
+import publicConfig from "./configs/public-config";
+import Nav from "./dashboard/nav";
 
 function PublicAppBar() {
   const history = useHistory();
@@ -60,15 +28,12 @@ function PublicAppBar() {
 
   const currentPath = location.pathname.slice(1).toLowerCase();
   const initialPage =
-    pages.find((page) => page.name.toLowerCase() === currentPath) || "Home";
+    publicConfig.find((page) => page.title.toLowerCase() === currentPath) ||
+    "Home";
   const [selectedPage, setSelectedPage] = React.useState(initialPage);
 
   const handleOpenNavMenu = () => {
     setDrawerOpen(true);
-  };
-
-  const handleCloseNavMenu = () => {
-    setDrawerOpen(false);
   };
 
   const scrollToSection = (section) => {
@@ -87,9 +52,9 @@ function PublicAppBar() {
   };
 
   const handlePageClick = (page) => {
+    setDrawerOpen(false);
     setSelectedPage(page);
     scrollToSection(page.toLowerCase());
-    setDrawerOpen(false);
   };
 
   const handleNavigate = (link) => {
@@ -98,8 +63,8 @@ function PublicAppBar() {
 
   React.useEffect(() => {
     const handleScroll = () => {
-      const sectionOffsets = pages.map((page) => {
-        const link = page.name;
+      const sectionOffsets = publicConfig.map((page) => {
+        const link = page.title;
         const section = document.getElementById(link.toLowerCase());
         return {
           link,
@@ -122,7 +87,8 @@ function PublicAppBar() {
         const section = location.hash.slice(1);
         scrollToSection(section);
         setSelectedPage(
-          pages.find((page) => page.name.toLowerCase() === section) || "Home"
+          publicConfig.find((page) => page.title.toLowerCase() === section) ||
+            "Home"
         );
       }
     });
@@ -130,7 +96,8 @@ function PublicAppBar() {
     if (currentPath && currentPath !== "login" && currentPath !== "register") {
       scrollToSection(currentPath);
       setSelectedPage(
-        pages.find((page) => page.name.toLowerCase() === currentPath) || "Home"
+        publicConfig.find((page) => page.title.toLowerCase() === currentPath) ||
+          "Home"
       );
     }
 
@@ -141,6 +108,10 @@ function PublicAppBar() {
       window.removeEventListener("scroll", handleScroll);
     };
   }, [history, currentPath]);
+
+  const paths = ["login", "register", "complete-registration", "verify-email"];
+
+  const shouldRenderHomeLink = paths.includes(currentPath);
 
   return (
     <AppBar
@@ -180,58 +151,13 @@ function PublicAppBar() {
             >
               <MenuIcon />
             </IconButton>
-            <Drawer
-              anchor="left"
-              open={drawerOpen}
-              onClose={handleCloseNavMenu}
-              sx={{ width: "50%" }}
-              PaperProps={{
-                sx: { width: "50%" },
-              }}
-            >
-              <Box sx={{ display: "flex", alignItems: "center", m: 2 }}>
-                <Logo />
-                <Typography>{process.env.REACT_APP_NAME}</Typography>
-              </Box>
-              <List>
-                {currentPath !== "login" &&
-                  currentPath !== "register" &&
-                  pages.map((page, i) => (
-                    <ListItem key={i} disablePadding>
-                      <ListItemButton
-                        onClick={() => handlePageClick(page.name)}
-                        sx={{
-                          backgroundColor:
-                            currentPath !== "login" &&
-                            selectedPage === page.name
-                              ? "#FE9D8C"
-                              : "transparent",
-                          "&:hover": {
-                            backgroundColor:
-                              currentPath !== "login" &&
-                              selectedPage === page.name
-                                ? "#FE9D8C"
-                                : "#FFD1C0",
-                          },
-                        }}
-                      >
-                        <ListItemIcon>{page.icon}</ListItemIcon>
-                        <ListItemText primary={page.name} sx={{ ml: -2 }} />
-                      </ListItemButton>
-                    </ListItem>
-                  ))}
-                {(currentPath === "login" || currentPath === "register") && (
-                  <ListItem disablePadding>
-                    <ListItemButton onClick={() => handleNavigate("/")}>
-                      <ListItemIcon>
-                        <HomeIcon />
-                      </ListItemIcon>
-                      <ListItemText primary="Home" sx={{ ml: -2 }} />
-                    </ListItemButton>
-                  </ListItem>
-                )}
-              </List>
-            </Drawer>
+            <Nav
+              handlePageClick={handlePageClick}
+              selectedPage={selectedPage}
+              navConfig={publicConfig}
+              openNav={drawerOpen}
+              onCloseNav={() => setDrawerOpen(false)}
+            />
           </Box>
 
           <Box
@@ -241,12 +167,11 @@ function PublicAppBar() {
               justifyContent: "center",
             }}
           >
-            {currentPath !== "login" &&
-              currentPath !== "register" &&
-              pages.map((page, i) => (
+            {!shouldRenderHomeLink &&
+              publicConfig.map((page, i) => (
                 <Button
                   key={i}
-                  onClick={() => handlePageClick(page.name)}
+                  onClick={() => handlePageClick(page.title)}
                   sx={{
                     my: 2,
                     color: "black",
@@ -254,7 +179,7 @@ function PublicAppBar() {
                     mx: 2,
                     textTransform: "none",
                     backgroundColor:
-                      currentPath !== "login" && selectedPage === page.name
+                      currentPath !== "login" && selectedPage === page.title
                         ? "#FE9D8C"
                         : "transparent",
                     "&::first-letter": {
@@ -265,7 +190,7 @@ function PublicAppBar() {
                     },
                   }}
                 >
-                  {page.name}
+                  {page.title}
                 </Button>
               ))}
           </Box>
