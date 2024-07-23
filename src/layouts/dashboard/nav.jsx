@@ -34,7 +34,7 @@ export default function Nav({
 }) {
   const pathname = usePathname();
 
-  const userAccount = useSelector((state) => state.users.user);
+  const user = useSelector((state) => state.users.user);
 
   const upLg = useResponsive("up", "lg");
 
@@ -42,8 +42,7 @@ export default function Nav({
     if (openNav) {
       onCloseNav();
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [pathname]);
+  }, [pathname, user]); //eslint-disable-line
 
   const renderAccount = (
     <Box
@@ -59,21 +58,17 @@ export default function Nav({
       }}
     >
       <Avatar
-        src={
-          userAccount?.profilePicture
-            ? userAccount?.profilePicture
-            : account.photoURL
-        }
+        src={user?.profilePicture ? user?.profilePicture : account.photoURL}
         alt="photoURL"
       />
 
       <Box sx={{ ml: 2 }}>
         <Typography variant="subtitle2">
-          {userAccount?.name ? userAccount?.name : account.displayName}
+          {user?.name ? user?.name : account.displayName}
         </Typography>
 
         <Typography variant="body2" sx={{ color: "text.secondary" }}>
-          {userAccount?.role ? userAccount?.role : account.role}
+          {user?.role ? user?.role : account.role}
         </Typography>
       </Box>
     </Box>
@@ -85,7 +80,11 @@ export default function Nav({
         <NavItem
           key={i}
           item={item}
-          selected={selectedPage === item.title}
+          selected={
+            selectedPage
+              ? selectedPage === item.title
+              : pathname === item.pathname
+          }
           handlePageClick={handlePageClick}
         />
       ))}
@@ -105,7 +104,7 @@ export default function Nav({
     >
       <Logo sx={{ mt: 3, ml: 4 }} />
 
-      {userAccount && renderAccount}
+      {user?.id && renderAccount}
       <Divider sx={{ my: 2 }} />
       {renderMenu}
 

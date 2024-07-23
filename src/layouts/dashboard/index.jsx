@@ -36,6 +36,7 @@ export default function DashboardLayout({ children }) {
     return <Loader />;
   }
 
+  console.log(user)
   return (
     <>
       <Header onOpenNav={() => setOpenNav(true)} />

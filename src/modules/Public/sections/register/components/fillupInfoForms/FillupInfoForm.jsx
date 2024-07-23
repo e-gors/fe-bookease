@@ -5,12 +5,7 @@ import SelectDropdown from "../../../../../../components/SelectDropdown";
 import PropTypes from "prop-types";
 
 function FillupInfoForm(props) {
-  const {
-    inputFields = [],
-    formValues,
-    handleKeyPress,
-    handleChange,
-  } = props;
+  const { inputFields = [], formValues, handleKeyPress, handleChange } = props;
 
   return (
     <Grid container spacing={2}>
@@ -46,17 +41,17 @@ function FillupInfoForm(props) {
 FillupInfoForm.propTypes = {
   inputFields: PropTypes.arrayOf(
     PropTypes.shape({
-      name: PropTypes.string.isRequired,
-      label: PropTypes.string.isRequired,
-      type: PropTypes.oneOf(["text", "select"]).isRequired,
+      name: PropTypes.string,
+      label: PropTypes.string,
+      type: PropTypes.oneOf(["text", "select"]),
       options: PropTypes.arrayOf(PropTypes.string),
       size: PropTypes.string,
-      state: PropTypes.string.isRequired,
+      state: PropTypes.string,
     })
-  ).isRequired,
-  formValues: PropTypes.object.isRequired,
+  ),
+  formValues: PropTypes.object,
   handleKeyPress: PropTypes.func,
-  handleChange: PropTypes.func.isRequired,
+  handleChange: PropTypes.func,
 };
 
 export default FillupInfoForm;

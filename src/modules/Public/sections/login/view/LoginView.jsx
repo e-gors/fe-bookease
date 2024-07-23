@@ -42,7 +42,6 @@ import { login, register } from "../../service";
 import { signInWithPopup } from "firebase/auth";
 import { useDispatch } from "react-redux";
 import { setUser } from "../../../../../redux/actions/userActions";
-import { setAccount } from "../../../../../redux/actions/registerActions";
 // ----------------------------------------------------------------------
 
 const validator = Validator({
@@ -143,9 +142,8 @@ export default function LoginView() {
 
   // using 3rd party and not yet register save to redux storage
   const Register = (data) => {
-    console.log(data);
     // dispatch(setAccount(data));
-    // router.push("/complete-registration");
+    router.push("/complete-registration");
   };
 
   //if user user external means to login or by manual login

@@ -16,6 +16,7 @@
     "axios": "^1.7.2",
     "date-fns": "^3.6.0",
     "firebase": "^10.12.3",
+    "lodash.isequal": "^4.5.0",
     "numeral": "^2.0.6",
     "react": "^18.3.1",
     "react-apexcharts": "^1.4.1",
@@ -26,6 +27,7 @@
     "react-router-dom": "^5.2.0",
     "react-scripts": "5.0.1",
     "react-toastify": "^10.0.5",
+    "redux-persist": "^6.0.0",
     "ree-validate-18": "^3.3.4",
     "simplebar-react": "^3.2.6",
     "web-vitals": "^2.1.4"

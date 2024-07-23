@@ -10,11 +10,11 @@ import Typography from "@mui/material/Typography";
 import IconButton from "@mui/material/IconButton";
 
 import { account } from "../../../_mock/account";
-import { useRouter } from "../../../routes/hooks";
+import { usePathname, useRouter } from "../../../routes/hooks";
 import { HandleCache } from "../../../utils/helpers";
 import CustomAlert from "../../../components/CustomAlert";
-import { useLocation } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { logoutUser } from "../../../redux/actions/userActions";
 
 // ----------------------------------------------------------------------
 
@@ -43,8 +43,9 @@ const MENU_OPTIONS = [
 
 // ----------------------------------------------------------------------
 export default function AccountPopover() {
+  const dispatch = useDispatch();
   const router = useRouter();
-  const location = useLocation();
+  const pathname = usePathname();
   const userAccount = useSelector((state) => state.users.user);
 
   const { profilePicture, name, email } = userAccount;
@@ -71,7 +72,7 @@ export default function AccountPopover() {
   };
 
   const handleNavigate = (link) => {
-    if (location.pathname === link) {
+    if (pathname === link) {
       handleClose();
     } else {
       router.push(link);
@@ -80,10 +81,8 @@ export default function AccountPopover() {
   };
 
   const handleLogout = () => {
-    HandleCache([
-      { name: "accessToken", method: "remove" },
-      { name: "user", method: "remove" },
-    ]);
+    HandleCache({ name: "accessToken" }, "remove");
+    dispatch(logoutUser())
     router.push("/login");
   };
 

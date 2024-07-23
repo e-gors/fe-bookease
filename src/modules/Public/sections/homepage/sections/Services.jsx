@@ -1,38 +1,50 @@
-import { Box, Grid, Skeleton, Typography } from "@mui/material";
-import ServiceCard from "../components/ServiceCard";
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { Box, Chip, Grid, Skeleton, Stack, Typography } from "@mui/material";
+import { useDispatch, useSelector } from "react-redux";
 import Http from "../../../../../utils/Http";
-import { useDispatch } from "react-redux";
-import { setCategories } from "../../../../../redux/actions/categoryActions";
+import {
+  setCategories,
+  setSelectedCategories,
+} from "../../../../../redux/actions/categoryActions";
+import { compareArray, isEmpty } from "../../../../../utils/helpers";
+import ServiceCard from "../components/ServiceCard";
+import { ContainedButton } from "../../../../../components/CustomButtons";
+import { useRouter } from "../../../../../routes/hooks";
 
 function Services() {
+  const router = useRouter();
   const dispatch = useDispatch();
+  const user = useSelector((state) => state.users.user);
 
-  const [loading, setLoading] = React.useState(false);
-  const [services, setServices] = React.useState([]);
-  const [selectedService, setSelectedService] = React.useState({});
-  const [open, setOpen] = React.useState(false);
-  const [filters, setFilters] = React.useState({
-    includeChildren: true,
-  });
+  const categories = useSelector((state) => state.categories.categories);
 
-  React.useEffect(() => {
+  const [loading, setLoading] = useState(false);
+  const [services, setServices] = useState([]);
+  const [selectedServices, setSelectedServices] = useState([]);
+  const [filters] = useState({ includeChildren: true });
+
+  useEffect(() => {
     const controller = new AbortController();
 
     fetchData(filters);
-    return () => controller.abort();
-  }, [filters]); //eslint-disable-line
+
+    if (isEmpty(categories) && !isEmpty(services))
+      dispatch(setCategories(services));
+    else if (!isEmpty(services) && !compareArray(categories, services))
+      dispatch(setCategories(services));
+
+    return controller.abort();
+  }, []);
 
   const fetchData = (params = {}) => {
     setLoading(true);
-    Http.get("/categories", {
-      params: {
-        ...params,
-      },
-    })
+    Http.get("categories", { params })
       .then((res) => {
-        dispatch(setCategories(res.data.data));
-        setServices(res.data.data);
+        if ((res.data.code = 200)) {
+          setServices(res.data.data);
+        } else {
+          console.log(res.data.message);
+        }
         setLoading(false);
       })
       .catch((err) => {
@@ -42,12 +54,23 @@ function Services() {
   };
 
   const handleSelectService = (service) => {
-    if (service.id === selectedService.id) {
-      setSelectedService({});
+    if (selectedServices.includes(service)) {
+      setSelectedServices(selectedServices.filter((s) => s.id !== service.id));
     } else {
-      setSelectedService(service);
-      setOpen(true);
+      setSelectedServices([...selectedServices, service]);
     }
+  };
+  const handleRemoveCategory = (category) => {
+    const updatedServices = selectedServices.filter(
+      (s) => s.id !== category.id
+    );
+    setSelectedServices(updatedServices);
+  };
+
+  const handleBookNow = () => {
+    if (!isEmpty(user)) router.push("/book-now");
+    else router.push("/register");
+    dispatch(setSelectedCategories(selectedServices));
   };
 
   return (
@@ -71,28 +94,52 @@ function Services() {
           textAlign: { xs: "left", md: "center" },
         }}
       >
-        We offer tons of Services to help you book more faster and wherever you
+        We offer tons of services to help you book more quickly, wherever you
         are.
       </Typography>
+      <Stack
+        direction="row"
+        spacing={{ xs: 1, md: 1.5 }}
+        useFlexGap
+        flexWrap="wrap"
+      >
+        {selectedServices?.map((service, i) => (
+          <Chip
+            key={i}
+            label={service.name}
+            variant="outlined"
+            onDelete={() => handleRemoveCategory(service)}
+            color="success"
+          />
+        ))}
+        {selectedServices.length !== 0 && (
+          <ContainedButton
+            variant="outlined"
+            onClick={handleBookNow}
+            sx={{ textWrap: "nowrap" }}
+          >
+            Book Now
+          </ContainedButton>
+        )}
+      </Stack>
       <Grid container spacing={2} sx={{ mt: 5 }}>
-        {!loading
-          ? services?.map((service, i) => (
-              <Grid item xs={12} sm={6} md={4} key={i}>
-                <ServiceCard
-                  data={service}
-                  selectedService={selectedService}
-                  onSelectService={handleSelectService}
-                  selected={selectedService.id === service.id}
-                  open={open}
-                  onClose={setOpen}
-                />
-              </Grid>
-            ))
-          : Array.from(new Array(12)).map((_, i) => (
-              <Grid item xs={12} sm={6} md={4} key={i}>
-                <Skeleton />
-              </Grid>
-            ))}
+        {loading &&
+          Array.from(new Array(12)).map((_, i) => (
+            <Grid item xs={12} sm={6} md={4} key={i}>
+              <Skeleton />
+            </Grid>
+          ))}
+        {!loading &&
+          Array.isArray(categories) &&
+          services?.map((service, i) => (
+            <Grid item xs={12} sm={6} md={4} key={i}>
+              <ServiceCard
+                data={service}
+                onSelectService={handleSelectService}
+                selected={selectedServices?.some((s) => s.id === service.id)}
+              />
+            </Grid>
+          ))}
       </Grid>
     </Box>
   );

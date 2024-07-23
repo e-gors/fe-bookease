@@ -15,9 +15,10 @@ import TwitterIcon from "@mui/icons-material/Twitter";
 import YouTubeIcon from "@mui/icons-material/YouTube";
 import PinterestIcon from "@mui/icons-material/Pinterest";
 import { TextButton } from "../components/CustomButtons";
-import { useHistory, useLocation } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import React from "react";
 import Copyright from "../components/Copyright";
+import { usePathname } from "../routes/hooks";
 
 const infoLinks = [
   "About Us",
@@ -62,7 +63,7 @@ const icons = [
 
 export default function Footer() {
   const history = useHistory();
-  const location = useLocation();
+  const pathname = usePathname();
 
   const scrollToSection = (section) => {
     const element = document.getElementById(section);
@@ -136,7 +137,7 @@ export default function Footer() {
             </Box>
           </Box>
         </Grid>
-        {location.pathname !== "/login" && location.pathname !== "/register" && (
+        {pathname !== "/login" && pathname !== "/register" && (
           <Grid item xs={12} md={8}>
             <Box
               sx={{
@@ -188,7 +189,6 @@ export default function Footer() {
       </Grid>
       <Divider sx={{ color: "white", my: 2 }} />
       <Copyright />
-
     </Box>
   );
 }

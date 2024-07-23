@@ -11,7 +11,7 @@ import {
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import { TextButton, OutlinedButton } from "../components/CustomButtons";
-import { useHistory, useLocation } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import LanguagePopover from "./dashboard/common/language-popover";
 import NotificationsPopover from "./dashboard/common/notifications-popover";
 import AccountPopover from "./dashboard/common/account-popover";
@@ -19,14 +19,15 @@ import { isAuth } from "../utils/helpers";
 import Logo from "../components/logo";
 import publicConfig from "./configs/public-config";
 import Nav from "./dashboard/nav";
+import { usePathname } from "../routes/hooks";
 
 function PublicAppBar() {
   const history = useHistory();
-  const location = useLocation();
+  const pathname = usePathname();
 
   const [drawerOpen, setDrawerOpen] = React.useState(false);
 
-  const currentPath = location.pathname.slice(1).toLowerCase();
+  const currentPath = pathname.slice(1).toLowerCase();
   const initialPage =
     publicConfig.find((page) => page.title.toLowerCase() === currentPath) ||
     "Home";
@@ -58,7 +59,7 @@ function PublicAppBar() {
   const handlePageClick = (page) => {
     setDrawerOpen(false);
     setSelectedPage(page);
-    if (paths.includes(currentPath)) {
+    if (shouldRenderHomeLink) {
       history.push("/");
     } else {
       scrollToSection(page.toLowerCase());
@@ -171,32 +172,31 @@ function PublicAppBar() {
               justifyContent: "center",
             }}
           >
-            {!shouldRenderHomeLink &&
-              publicConfig.map((page, i) => (
-                <Button
-                  key={i}
-                  onClick={() => handlePageClick(page.title)}
-                  sx={{
-                    my: 2,
-                    color: "black",
-                    display: "block",
-                    mx: 2,
-                    textTransform: "none",
-                    backgroundColor:
-                      currentPath !== "login" && selectedPage === page.title
-                        ? "#FE9D8C"
-                        : "transparent",
-                    "&::first-letter": {
-                      textTransform: "uppercase",
-                    },
-                    "&:hover": {
-                      backgroundColor: "#FE9D8C",
-                    },
-                  }}
-                >
-                  {page.title}
-                </Button>
-              ))}
+            {publicConfig.map((page, i) => (
+              <Button
+                key={i}
+                onClick={() => handlePageClick(page.title)}
+                sx={{
+                  my: 2,
+                  color: "black",
+                  display: "block",
+                  mx: 2,
+                  textTransform: "none",
+                  backgroundColor:
+                    currentPath !== "login" && selectedPage === page.title
+                      ? "#FE9D8C"
+                      : "transparent",
+                  "&::first-letter": {
+                    textTransform: "uppercase",
+                  },
+                  "&:hover": {
+                    backgroundColor: "#FE9D8C",
+                  },
+                }}
+              >
+                {page.title}
+              </Button>
+            ))}
           </Box>
 
           {!isAuth() && (

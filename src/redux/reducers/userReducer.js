@@ -13,8 +13,8 @@ export const userReducer = (state = initialState, { type, payload }) => {
       return { ...state, users: payload };
     case ActionTypes.UPDATE_USER:
       return { ...state, user: payload };
-    case ActionTypes.REMOVE_USER:
-      return Object.keys(state.user).map((item) => item.id !== payload);
+    case ActionTypes.LOGOUT_USER:
+      return { ...state, user: payload };
     default:
       return state;
   }

@@ -1,20 +1,9 @@
 import { Box, Card, Checkbox, Stack, Tooltip, Typography } from "@mui/material";
 import InfoIcon from "@mui/icons-material/Info";
 import PropTypes from "prop-types";
-import React, { useState } from "react";
-import MoreDataModal from "./MoreDataModal";
 
 export default function ServiceCard(props) {
-  const {
-    data,
-    open,
-    onClose,
-    sx,
-    selected,
-    selectedService,
-    onSelectService,
-    ...rest
-  } = props;
+  const { data = [], sx, selected, onSelectService, ...rest } = props;
 
   return (
     <>
@@ -78,14 +67,6 @@ export default function ServiceCard(props) {
           </Typography>
         </Card>
       </Stack>
-
-      <MoreDataModal
-        selectedService={selectedService}
-        onSelectService={onSelectService}
-        data={selectedService}
-        open={open}
-        onClose={() => onClose(false)}
-      />
     </>
   );
 }
@@ -103,4 +84,6 @@ ServiceCard.propTypes = {
       })
     ),
   }),
+  selected: PropTypes.bool,
+  onSelectService: PropTypes.func,
 };

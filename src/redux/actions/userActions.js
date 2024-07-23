@@ -1,11 +1,11 @@
 import { ActionTypes } from "../types/action-types";
 
 export const setUsers = (users) => {
-    return {
-      type: ActionTypes.SET_USERS,
-      payload: users,
-    };
+  return {
+    type: ActionTypes.SET_USERS,
+    payload: users,
   };
+};
 
 export const setUser = (user) => {
   return {
@@ -28,3 +28,9 @@ export const updateUser = (newUser) => {
   };
 };
 
+export const logoutUser = () => {
+  return {
+    type: ActionTypes.LOGOUT_USER,
+    payload: {},
+  };
+};

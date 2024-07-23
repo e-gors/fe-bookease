@@ -7,16 +7,9 @@ export const setCategories = (categories) => {
   };
 };
 
-export const setCategory = (category) => {
+export const setSelectedCategories = (categories) => {
   return {
-    type: ActionTypes.SET_CATEGORY,
-    payload: category,
-  };
-};
-
-export const setSubCategory = (subCategory) => {
-  return {
-    type: ActionTypes.SET_SUB_CATEGORY,
-    payload: subCategory,
+    type: ActionTypes.SET_SELECTED_CATEGORIES,
+    payload: categories,
   };
 };

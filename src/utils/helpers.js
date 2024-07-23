@@ -1,5 +1,6 @@
 import ReeValidate from "ree-validate-18";
 import PropTypes from "prop-types";
+import isEqual from "lodash.isequal";
 
 export const handleErrorResponse = (err) => {
   if (
@@ -81,7 +82,6 @@ export const isMatchPassword = (password, re_password) => {
   return password === re_password;
 };
 
-
 // Local Storage handling
 export const HandleCache = (data, method) => {
   if (Array.isArray(data)) {
@@ -154,4 +154,13 @@ export const debounce = (func) => {
       func.apply(context, args);
     }, 500);
   };
+};
+
+// Compare two arrays
+export const compareArray = (arr1, arr2) => {
+  if (arr1.length !== arr2.length) return false;
+  for (let i = 0; i < arr1.length; i++) {
+    if (!isEqual(arr1[i], arr2[i])) return false; // Use lodash's isEqual for deep comparison
+  }
+  return true;
 };
